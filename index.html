@@ -161,7 +161,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .modal-desc{font-size:0.8rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
 .modal-buy{width:100%;background:var(--accent);border:none;color:#0a0a0a;padding:0.9rem;font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
 .modal-buy:hover{opacity:0.85;}
-/* CART */
 .cart-drawer{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:800;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
 .cart-drawer.open{transform:translateX(0);}
 .cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:799;opacity:0;pointer-events:none;transition:opacity 0.3s;}
@@ -187,7 +186,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .cart-item-price{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--accent);letter-spacing:0.05em;}
 .cart-item-remove{background:none;border:none;color:rgba(255,69,69,0.5);cursor:pointer;font-size:0.9rem;margin-left:auto;padding:0.2rem;transition:color 0.2s;}
 .cart-item-remove:hover{color:var(--red);}
-/* COUPON IN CART */
 .cart-coupon-section{padding:0.8rem 0;border-bottom:1px solid var(--border);}
 .cart-coupon-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;}
 .cart-coupon-row{display:flex;gap:0.5rem;}
@@ -209,7 +207,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .cart-checkout-btn:hover{opacity:0.85;}
 .cart-clear-btn{width:100%;background:transparent;border:1px solid rgba(255,69,69,0.25);color:rgba(255,69,69,0.7);padding:0.6rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .cart-clear-btn:hover{border-color:var(--red);color:var(--red);}
-/* CHECKOUT */
 .checkout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:900;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2rem 1rem;}
 .checkout-overlay.open{display:flex;}
 .checkout-box{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:640px;animation:slideUp 0.25s ease;margin:auto;}
@@ -226,7 +223,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .checkout-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
 .checkout-input,.checkout-select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.7rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.78rem;outline:none;width:100%;transition:border-color 0.2s;}
 .checkout-input:focus,.checkout-select:focus{border-color:var(--accent2);}
-.checkout-select option{background:var(--bg3);}
 .checkout-order-summary{background:var(--bg3);border:1px solid var(--border);padding:1.2rem;margin-bottom:1.2rem;}
 .checkout-order-title{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
 .checkout-order-item{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.75rem;}
@@ -242,7 +238,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .checkout-pay-btn:hover{opacity:0.85;}
 .checkout-back-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.7rem;font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:0.6rem;}
 .checkout-back-btn:hover{color:var(--text);border-color:var(--text);}
-/* SUCCESS */
 .checkout-success{text-align:center;padding:3.5rem 2rem;}
 .success-icon{font-size:4rem;margin-bottom:1.2rem;display:block;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
 @keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -251,7 +246,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .success-order-id{font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--accent);background:rgba(232,201,126,0.08);border:1px solid rgba(232,201,126,0.2);padding:0.7rem 1.4rem;display:inline-block;margin-bottom:2rem;letter-spacing:0.1em;}
 .success-done-btn{background:var(--accent);border:none;color:#0a0a0a;padding:0.9rem 2.5rem;font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
 .success-done-btn:hover{opacity:0.85;}
-/* CONFIRM */
 .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;padding:1rem;}
 .confirm-overlay.open{display:flex;}
 .confirm-box{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:380px;padding:2rem;animation:slideUp 0.2s ease;text-align:center;}
@@ -286,7 +280,7 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
 </head>
 <body>
 
-<div class="announce" id="announceBanner">⚡ Free delivery on orders over $50 — Limited time only ⚡</div>
+<div class="announce" id="announceBanner">⚡ Free delivery on all orders — No minimums ⚡</div>
 
 <nav>
   <ul class="nav-links">
@@ -345,7 +339,6 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <div class="admin-tabs">
     <button class="admin-tab active" onclick="switchTab('listings',this)">📦 Listings</button>
@@ -429,9 +422,9 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
     <div class="ap-header"><div class="ap-title">Shop Settings</div></div>
     <div class="ap-section-title">Announcement Banner</div>
     <div style="margin-bottom:1.5rem;">
-      <div class="announce-preview" id="announcePreview">⚡ Free delivery on orders over $50 — Limited time only ⚡</div>
+      <div class="announce-preview" id="announcePreview">⚡ Free delivery on all orders — No minimums ⚡</div>
       <div class="ap-form">
-        <div class="fgroup ap-form-full"><label class="flabel">Banner Text</label><input class="finput" id="set-announce" value="⚡ Free delivery on orders over $50 — Limited time only ⚡" oninput="previewAnnounce(this.value)"/></div>
+        <div class="fgroup ap-form-full"><label class="flabel">Banner Text</label><input class="finput" id="set-announce" value="⚡ Free delivery on all orders — No minimums ⚡" oninput="previewAnnounce(this.value)"/></div>
         <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="saveAnnounce()">Save Banner</button></div>
       </div>
     </div>
@@ -452,7 +445,6 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
-<!-- PRODUCTS -->
 <div class="section-header">
   <h2 class="section-title">Products</h2>
   <div class="section-line"></div>
@@ -471,7 +463,6 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   <div class="footer-text">© 2025 John's Shop. All rights reserved.</div>
 </footer>
 
-<!-- CART DRAWER -->
 <div class="cart-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
@@ -502,12 +493,10 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
-<!-- CHECKOUT OVERLAY -->
 <div class="checkout-overlay" id="checkoutOverlay">
   <div class="checkout-box" id="checkoutBox"></div>
 </div>
 
-<!-- LOGIN OVERLAY -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
     <div class="login-title">Admin Login</div>
@@ -520,7 +509,6 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
-<!-- PRODUCT MODAL -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">×</button>
@@ -533,7 +521,6 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
-<!-- CONFIRM MODAL -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <div class="confirm-icon" id="confirmIcon">⚠️</div>
@@ -549,19 +536,43 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
 <div class="toast" id="toast"></div>
 
 <script>
-let ADMIN_PASS = 'johns2025';
-let isAdmin = false;
-let products = [];
-let cart = [];
-let users = [
+// ── Storage helpers
+function save(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
+function load(key,def){try{const v=localStorage.getItem(key);return v!=null?JSON.parse(v):def;}catch(e){return def;}}
+
+// ── State (loaded from localStorage)
+let ADMIN_PASS=load('adminPass','johns2025');
+let isAdmin=load('isAdmin',false);
+let products=load('products',[]);
+let cart=load('cart',[]);
+let users=load('users',[
   {id:1,username:'owner',display:'John (Owner)',role:'owner',joined:'2025-01-01',banned:false},
   {id:2,username:'admin',display:'Admin',role:'admin',joined:'2025-01-01',banned:false},
-];
-let nextUserId = 3;
-let giveaways = [];
-let coupons = [];
-let shopOpen = true;
-let appliedCoupon = null;
+]);
+let nextUserId=load('nextUserId',3);
+let giveaways=load('giveaways',[]);
+let coupons=load('coupons',[]);
+let shopOpen=load('shopOpen',true);
+let appliedCoupon=null;
+
+function persist(){
+  save('adminPass',ADMIN_PASS);
+  save('isAdmin',isAdmin);
+  save('products',products);
+  save('cart',cart);
+  save('users',users);
+  save('nextUserId',nextUserId);
+  save('giveaways',giveaways);
+  save('coupons',coupons);
+  save('shopOpen',shopOpen);
+}
+
+// Restore admin UI state on load
+if(isAdmin){
+  document.getElementById('adminPanel').classList.add('open');
+  document.getElementById('adminToggleBtn').classList.add('active');
+  document.getElementById('adminToggleBtn').textContent='⚙ Admin ●';
+}
 
 function switchTab(name,el){
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
@@ -623,14 +634,14 @@ function addListing(){
   products.push({name,category:cat,price,original:original||null,emoji,badge:badge||null,desc});
   ['f-name','f-cat','f-price','f-original','f-emoji','f-desc'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-badge').value='';
-  showToast('Listing added!','success');render();
+  persist();showToast('Listing added!','success');render();
 }
 
 function deleteItem(i,e){
   e.stopPropagation();
   confirmAction('🗑️','Delete Listing','Remove "'+products[i].name+'" from the shop?',()=>{
     cart=cart.filter(c=>c.productIdx!==i).map(c=>({...c,productIdx:c.productIdx>i?c.productIdx-1:c.productIdx}));
-    products.splice(i,1);updateCartBadge();renderCart();showToast('Listing removed.','error');render();
+    products.splice(i,1);persist();updateCartBadge();renderCart();showToast('Listing removed.','error');render();
   });
 }
 
@@ -643,7 +654,7 @@ function addUser(){
   if(users.find(u=>u.username===username)){showToast('Username already taken.','error');return;}
   users.push({id:nextUserId++,username,display,role,joined:new Date().toISOString().split('T')[0],banned:false,pass});
   ['nu-name','nu-pass','nu-display'].forEach(id=>document.getElementById(id).value='');
-  showToast(`Account "${username}" created!`,'success');renderUsers();updateStats();
+  persist();showToast(`Account "${username}" created!`,'success');renderUsers();updateStats();
 }
 
 function renderUsers(){
@@ -667,13 +678,13 @@ function renderUsers(){
   });
 }
 
-function banUser(i){confirmAction('🔨','Ban User','Ban @'+users[i].username+'?',()=>{users[i].banned=true;showToast('Banned.','error');renderUsers();});}
-function unbanUser(i){users[i].banned=false;showToast('Unbanned.','success');renderUsers();}
-function promoteUser(i){confirmAction('⭐','Promote','Give @'+users[i].username+' admin?',()=>{users[i].role='admin';showToast('Promoted!','success');renderUsers();});}
-function demoteUser(i){users[i].role='user';showToast('Demoted.','info');renderUsers();}
+function banUser(i){confirmAction('🔨','Ban User','Ban @'+users[i].username+'?',()=>{users[i].banned=true;persist();showToast('Banned.','error');renderUsers();});}
+function unbanUser(i){users[i].banned=false;persist();showToast('Unbanned.','success');renderUsers();}
+function promoteUser(i){confirmAction('⭐','Promote','Give @'+users[i].username+' admin?',()=>{users[i].role='admin';persist();showToast('Promoted!','success');renderUsers();});}
+function demoteUser(i){users[i].role='user';persist();showToast('Demoted.','info');renderUsers();}
 function deleteUser(i){
   if(users[i].role==='owner'){showToast('Cannot delete owner.','error');return;}
-  confirmAction('🗑️','Delete Account','Delete @'+users[i].username+'?',()=>{users.splice(i,1);showToast('Deleted.','error');renderUsers();updateStats();});
+  confirmAction('🗑️','Delete Account','Delete @'+users[i].username+'?',()=>{users.splice(i,1);persist();showToast('Deleted.','error');renderUsers();updateStats();});
 }
 
 function createGiveaway(){
@@ -685,7 +696,7 @@ function createGiveaway(){
   giveaways.unshift({id:Date.now(),prize,emoji,desc,winners,status:'active',entries:[],created:new Date().toLocaleDateString()});
   ['gw-prize','gw-emoji','gw-desc'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('gw-winners').value='1';
-  showToast('Giveaway launched! 🎉','success');renderGiveaways();updateGiveawayBanner();
+  persist();showToast('Giveaway launched! 🎉','success');renderGiveaways();updateGiveawayBanner();
 }
 function renderGiveaways(){
   const el=document.getElementById('giveawayList');
@@ -707,13 +718,13 @@ function renderGiveaways(){
     el.appendChild(div);
   });
 }
-function endGiveaway(i){giveaways[i].status='ended';showToast('Ended.','info');renderGiveaways();updateGiveawayBanner();}
-function deleteGiveaway(i){confirmAction('🗑️','Delete Giveaway','Delete permanently?',()=>{giveaways.splice(i,1);showToast('Deleted.','error');renderGiveaways();updateGiveawayBanner();});}
+function endGiveaway(i){giveaways[i].status='ended';persist();showToast('Ended.','info');renderGiveaways();updateGiveawayBanner();}
+function deleteGiveaway(i){confirmAction('🗑️','Delete Giveaway','Delete permanently?',()=>{giveaways.splice(i,1);persist();showToast('Deleted.','error');renderGiveaways();updateGiveawayBanner();});}
 function pickWinner(i){
   const gw=giveaways[i];
   if(!gw.entries.length){showToast('No entries yet!','error');return;}
   gw.winner=gw.entries[Math.floor(Math.random()*gw.entries.length)];
-  gw.status='ended';showToast('🏆 Winner: '+gw.winner,'success');renderGiveaways();updateGiveawayBanner();
+  gw.status='ended';persist();showToast('🏆 Winner: '+gw.winner,'success');renderGiveaways();updateGiveawayBanner();
 }
 function updateGiveawayBanner(){
   const active=giveaways.find(g=>g.status==='active');
@@ -729,7 +740,7 @@ function enterGiveaway(){
   active.entries.push('Guest_'+Math.floor(Math.random()*9999));
   document.getElementById('gEnterBtn').disabled=true;
   document.getElementById('gEnterBtn').textContent='Entered ✓';
-  showToast('You entered! Good luck 🍀','success');renderGiveaways();updateGiveawayBanner();
+  persist();showToast('You entered! Good luck 🍀','success');renderGiveaways();updateGiveawayBanner();
 }
 
 function createCoupon(){
@@ -741,7 +752,7 @@ function createCoupon(){
   if(coupons.find(c=>c.code===code)){showToast('Code already exists.','error');return;}
   coupons.push({code,type,amount,maxUses,uses:0,active:true});
   ['cp-code','cp-amount'].forEach(id=>document.getElementById(id).value='');
-  showToast('Coupon "'+code+'" created!','success');renderCoupons();
+  persist();showToast('Coupon "'+code+'" created!','success');renderCoupons();
 }
 function renderCoupons(){
   const el=document.getElementById('couponList');
@@ -760,10 +771,9 @@ function renderCoupons(){
     el.appendChild(div);
   });
 }
-function toggleCoupon(i){coupons[i].active=!coupons[i].active;showToast('Coupon '+(coupons[i].active?'enabled':'disabled')+'.','info');renderCoupons();}
-function deleteCoupon(i){coupons.splice(i,1);showToast('Deleted.','error');renderCoupons();}
+function toggleCoupon(i){coupons[i].active=!coupons[i].active;persist();showToast('Coupon '+(coupons[i].active?'enabled':'disabled')+'.','info');renderCoupons();}
+function deleteCoupon(i){coupons.splice(i,1);persist();showToast('Deleted.','error');renderCoupons();}
 
-// ── Coupon application
 function applyCoupon(){
   const code=document.getElementById('cartCouponInput').value.trim().toUpperCase();
   if(!code){showToast('Enter a coupon code.','error');return;}
@@ -787,32 +797,31 @@ function removeCoupon(){
 
 function previewAnnounce(v){document.getElementById('announcePreview').textContent=v||'(empty)';}
 function saveAnnounce(){document.getElementById('announceBanner').textContent=document.getElementById('set-announce').value.trim();showToast('Banner updated!','success');}
-function setShopStatus(s){shopOpen=s==='open';document.getElementById('shopStatusLabel').textContent=shopOpen?'OPEN':'CLOSED';document.getElementById('shopStatusLabel').style.color=shopOpen?'var(--green)':'var(--red)';showToast('Shop is '+(shopOpen?'OPEN':'CLOSED')+'.',shopOpen?'success':'info');}
+function setShopStatus(s){shopOpen=s==='open';persist();document.getElementById('shopStatusLabel').textContent=shopOpen?'OPEN':'CLOSED';document.getElementById('shopStatusLabel').style.color=shopOpen?'var(--green)':'var(--red)';showToast('Shop is '+(shopOpen?'OPEN':'CLOSED')+'.',shopOpen?'success':'info');}
 function changePassword(){
   const p1=document.getElementById('set-pass').value;
   const p2=document.getElementById('set-pass2').value;
   if(!p1||!p2){showToast('Fill both fields.','error');return;}
   if(p1!==p2){showToast('Passwords do not match.','error');return;}
   if(p1.length<6){showToast('Min 6 characters.','error');return;}
-  ADMIN_PASS=p1;document.getElementById('set-pass').value='';document.getElementById('set-pass2').value='';
+  ADMIN_PASS=p1;persist();document.getElementById('set-pass').value='';document.getElementById('set-pass2').value='';
   showToast('Password updated!','success');
 }
 
-// ── Cart
 function addToCart(productIdx,e){
   if(e)e.stopPropagation();
   const ex=cart.find(c=>c.productIdx===productIdx);
   if(ex)ex.qty++;else cart.push({productIdx,qty:1});
-  updateCartBadge();renderCart();showToast('Added to cart!','success');
+  persist();updateCartBadge();renderCart();showToast('Added to cart!','success');
 }
-function removeFromCart(ci){cart.splice(ci,1);updateCartBadge();renderCart();}
+function removeFromCart(ci){cart.splice(ci,1);persist();updateCartBadge();renderCart();}
 function changeQty(ci,delta){
   cart[ci].qty+=delta;
   if(cart[ci].qty<=0){removeFromCart(ci);return;}
-  updateCartBadge();renderCart();
+  persist();updateCartBadge();renderCart();
 }
 function clearCart(){
-  cart=[];appliedCoupon=null;updateCartBadge();renderCart();showToast('Cart cleared.','info');
+  cart=[];appliedCoupon=null;persist();updateCartBadge();renderCart();showToast('Cart cleared.','info');
   document.getElementById('couponInputWrap').style.display='flex';
   document.getElementById('couponAppliedDisplay').style.display='none';
 }
@@ -825,7 +834,7 @@ function calcTotals(){
     discount=appliedCoupon.type==='percent'?subtotal*(appliedCoupon.amount/100):Math.min(appliedCoupon.amount,subtotal);
   }
   const after=subtotal-discount;
-  const shipping=after>=50?0:4.99;
+  const shipping=0;
   return{subtotal,discount,after,shipping,total:after+shipping};
 }
 
@@ -858,7 +867,7 @@ function renderCart(){
       </div>`;
     container.appendChild(row);
   });
-  const {subtotal,discount,shipping,total}=calcTotals();
+  const {subtotal,discount,total}=calcTotals();
   document.getElementById('cartSubtotal').textContent='$'+subtotal.toFixed(2);
   const dr=document.getElementById('cartDiscountRow');
   if(discount>0){
@@ -866,14 +875,13 @@ function renderCart(){
     document.getElementById('cartDiscountLabel').textContent='Coupon ('+appliedCoupon.code+')';
     document.getElementById('cartDiscountAmt').textContent='-$'+discount.toFixed(2);
   }else{dr.style.display='none';}
-  document.getElementById('cartShipping').textContent=shipping===0?'Free':'$4.99';
+  document.getElementById('cartShipping').textContent='Free';
   document.getElementById('cartTotal').textContent='$'+total.toFixed(2);
   footer.style.display='block';
 }
 function openCart(){renderCart();document.getElementById('cartDrawer').classList.add('open');document.getElementById('cartBackdrop').classList.add('open');}
 function closeCart(){document.getElementById('cartDrawer').classList.remove('open');document.getElementById('cartBackdrop').classList.remove('open');}
 
-// ── Checkout
 function openCheckout(){
   if(!cart.length)return;
   closeCart();
@@ -883,7 +891,7 @@ function openCheckout(){
 function closeCheckout(){document.getElementById('checkoutOverlay').classList.remove('open');}
 
 function buildCheckoutForm(){
-  const {subtotal,discount,shipping,total}=calcTotals();
+  const {subtotal,discount,total}=calcTotals();
   const items=cart.map(item=>{
     const p=products[item.productIdx];if(!p)return'';
     return`<div class="checkout-order-item">
@@ -892,7 +900,6 @@ function buildCheckoutForm(){
     </div>`;
   }).join('');
   const discRow=discount>0?`<div class="checkout-total-row discount-row"><span>Coupon (${appliedCoupon.code})</span><span>-$${discount.toFixed(2)}</span></div>`:'';
-
   document.getElementById('checkoutBox').innerHTML=`
     <div class="checkout-header">
       <div class="checkout-title">Checkout</div>
@@ -901,68 +908,31 @@ function buildCheckoutForm(){
     <div class="checkout-body">
       <div class="checkout-step">01 — Contact Information</div>
       <div class="checkout-grid">
-        <div class="checkout-field">
-          <label class="checkout-label">First Name *</label>
-          <input class="checkout-input" id="co-fname" placeholder="John"/>
-        </div>
-        <div class="checkout-field">
-          <label class="checkout-label">Last Name *</label>
-          <input class="checkout-input" id="co-lname" placeholder="Doe"/>
-        </div>
-        <div class="checkout-field checkout-full">
-          <label class="checkout-label">Email Address *</label>
-          <input class="checkout-input" id="co-email" type="email" placeholder="john@example.com"/>
-        </div>
-        <div class="checkout-field checkout-full">
-          <label class="checkout-label">Discord Username (optional)</label>
-          <input class="checkout-input" id="co-discord" placeholder="john#0001"/>
-        </div>
+        <div class="checkout-field"><label class="checkout-label">First Name *</label><input class="checkout-input" id="co-fname" placeholder="John"/></div>
+        <div class="checkout-field"><label class="checkout-label">Last Name *</label><input class="checkout-input" id="co-lname" placeholder="Doe"/></div>
+        <div class="checkout-field checkout-full"><label class="checkout-label">Email Address *</label><input class="checkout-input" id="co-email" type="email" placeholder="john@example.com"/></div>
+        <div class="checkout-field checkout-full"><label class="checkout-label">Discord Username (optional)</label><input class="checkout-input" id="co-discord" placeholder="john#0001"/></div>
       </div>
-
       <div class="checkout-step" style="margin-top:1.5rem;">02 — Payment Details</div>
       <div class="checkout-grid">
-        <div class="checkout-field checkout-full">
-          <label class="checkout-label">Card Number *</label>
-          <input class="checkout-input" id="co-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/>
-        </div>
-        <div class="checkout-field">
-          <label class="checkout-label">Expiry (MM/YY) *</label>
-          <input class="checkout-input" id="co-expiry" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"/>
-        </div>
-        <div class="checkout-field">
-          <label class="checkout-label">CVV *</label>
-          <input class="checkout-input" id="co-cvv" placeholder="123" maxlength="4" type="password"/>
-        </div>
-        <div class="checkout-field checkout-full">
-          <label class="checkout-label">Name on Card *</label>
-          <input class="checkout-input" id="co-cardname" placeholder="John Doe"/>
-        </div>
+        <div class="checkout-field checkout-full"><label class="checkout-label">Card Number *</label><input class="checkout-input" id="co-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/></div>
+        <div class="checkout-field"><label class="checkout-label">Expiry (MM/YY) *</label><input class="checkout-input" id="co-expiry" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"/></div>
+        <div class="checkout-field"><label class="checkout-label">CVV *</label><input class="checkout-input" id="co-cvv" placeholder="123" maxlength="4" type="password"/></div>
+        <div class="checkout-field checkout-full"><label class="checkout-label">Name on Card *</label><input class="checkout-input" id="co-cardname" placeholder="John Doe"/></div>
       </div>
-
       <div class="checkout-step" style="margin-top:1.5rem;">03 — Order Summary</div>
-      <div class="checkout-order-summary">
-        <div class="checkout-order-title">Items in your order</div>
-        ${items}
-      </div>
+      <div class="checkout-order-summary"><div class="checkout-order-title">Items in your order</div>${items}</div>
       <div class="checkout-total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
       ${discRow}
-      <div class="checkout-total-row"><span>Shipping</span><span>${shipping===0?'Free':'$4.99'}</span></div>
+      <div class="checkout-total-row"><span>Shipping</span><span>Free</span></div>
       <div class="checkout-total-row grand"><span>Total</span><span>$${total.toFixed(2)}</span></div>
-
       <button class="checkout-pay-btn" onclick="processPayment()">🔒 Pay $${total.toFixed(2)}</button>
       <button class="checkout-back-btn" onclick="closeCheckout();openCart();">← Back to Cart</button>
     </div>`;
 }
 
-function fmtCard(input){
-  let v=input.value.replace(/\D/g,'').substring(0,16);
-  input.value=v.replace(/(.{4})/g,'$1 ').trim();
-}
-function fmtExpiry(input){
-  let v=input.value.replace(/\D/g,'');
-  if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);
-  input.value=v;
-}
+function fmtCard(input){let v=input.value.replace(/\D/g,'').substring(0,16);input.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function fmtExpiry(input){let v=input.value.replace(/\D/g,'');if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);input.value=v;}
 
 function processPayment(){
   const fname=document.getElementById('co-fname').value.trim();
@@ -977,27 +947,21 @@ function processPayment(){
   if(card.replace(/\s/g,'').length<13){showToast('Enter a valid card number.','error');return;}
   if(!/^\d{2}\/\d{2}$/.test(expiry)){showToast('Enter expiry as MM/YY.','error');return;}
   if(cvv.length<3){showToast('Enter a valid CVV.','error');return;}
-
-  // Increment coupon use count
   if(appliedCoupon){const c=coupons.find(x=>x.code===appliedCoupon.code);if(c)c.uses++;}
-
   const orderId='JNS-'+Date.now().toString().slice(-6).toUpperCase();
   const {total}=calcTotals();
   document.getElementById('checkoutBox').innerHTML=`
     <div class="checkout-success">
       <span class="success-icon">🎉</span>
       <div class="success-title">Order Placed!</div>
-      <div class="success-sub">
-        Thanks, ${fname}! Your order has been received.<br>
-        A confirmation will be sent to <strong style="color:var(--text);">${email}</strong>.
-      </div>
+      <div class="success-sub">Thanks, ${fname}! Your order has been received.<br>A confirmation will be sent to <strong style="color:var(--text);">${email}</strong>.</div>
       <div class="success-order-id">Order #${orderId} · $${total.toFixed(2)}</div>
       <button class="success-done-btn" onclick="closeCheckout();clearCart();">Done →</button>
     </div>`;
-
   appliedCoupon=null;
   document.getElementById('couponInputWrap').style.display='flex';
   document.getElementById('couponAppliedDisplay').style.display='none';
+  persist();
 }
 
 function openModal(i){
@@ -1020,7 +984,7 @@ function doLogin(){
   const p=document.getElementById('loginPass').value;
   const au=users.find(us=>us.username===u&&(us.role==='admin'||us.role==='owner')&&!us.banned);
   if(au&&p===ADMIN_PASS){
-    isAdmin=true;
+    isAdmin=true;persist();
     document.getElementById('loginOverlay').classList.remove('open');
     document.getElementById('loginPass').value='';document.getElementById('loginUser').value='';
     document.getElementById('loginErr').style.display='none';
@@ -1041,7 +1005,7 @@ function cancelLogin(){
   document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
 }
 function logout(){
-  isAdmin=false;
+  isAdmin=false;persist();
   document.getElementById('adminPanel').classList.remove('open');
   document.getElementById('adminToggleBtn').classList.remove('active');
   document.getElementById('adminToggleBtn').textContent='⚙ Admin';
@@ -1063,7 +1027,11 @@ function showToast(msg,type='info'){
   setTimeout(()=>t.classList.remove('show'),2400);
 }
 
+// Init
 render();
+updateCartBadge();
+updateGiveawayBanner();
+if(isAdmin){renderUsers();renderGiveaways();renderCoupons();}
 </script>
 </body>
 </html>
