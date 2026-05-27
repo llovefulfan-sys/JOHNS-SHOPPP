@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John's Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Space+Mono:wght@400;700&family=Oswald:wght@300;600&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#161616;--card:#161616;--border:rgba(255,255,255,0.08);--accent:#e8c97e;--accent2:#c084fc;--text:#f0ece3;--muted:#888;--red:#ff4545;--green:#4ade80;}
+body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,10,0.95);position:sticky;top:0;z-index:200;backdrop-filter:blur(12px);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-right{display:flex;gap:0.8rem;align-items:center;}
+.nav-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.5rem 1rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.nav-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+.nav-btn.active{border-color:var(--accent2);color:var(--accent2);background:rgba(192,132,252,0.08);}
+.nav-cart-btn{background:var(--accent);border:none;color:#0a0a0a;padding:0.5rem 1.2rem;font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;display:flex;align-items:center;gap:0.5rem;}
+.nav-cart-btn:hover{opacity:0.85;}
+.cart-count-badge{background:#0a0a0a;color:var(--accent);border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;min-width:18px;}
+.announce{background:var(--accent);color:#0a0a0a;text-align:center;padding:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;}
+.hero{text-align:center;padding:5rem 2rem 4rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,201,126,0.07) 0%,transparent 70%);pointer-events:none;}
+.logo-stack{display:inline-flex;flex-direction:column;align-items:center;gap:0.15rem;margin-bottom:1.5rem;}
+.logo-john{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,11rem);letter-spacing:0.05em;line-height:1;color:var(--accent);}
+.logo-apostrophe{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(2rem,5vw,4rem);color:var(--accent2);margin:-0.5rem 0 -0.3rem;align-self:flex-start;margin-left:2rem;}
+.logo-shop-wrap{display:flex;align-items:baseline;gap:0.4rem;}
+.logo-shop-s{font-family:'Permanent Marker',cursive;font-size:clamp(3rem,8vw,6.5rem);color:#fff;}
+.logo-shop-hop{font-family:'Oswald',sans-serif;font-weight:300;font-size:clamp(3rem,8vw,6.5rem);letter-spacing:0.25em;color:var(--muted);text-transform:uppercase;}
+.hero-tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;color:var(--muted);letter-spacing:0.05em;margin-bottom:2.5rem;}
+.hero-badges{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.hbadge{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.4rem 1rem;border:1px solid var(--border);color:var(--muted);}
+.hbadge.hot{border-color:var(--accent);color:var(--accent);}
+.marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:0.7rem 0;margin:3rem 0 0;white-space:nowrap;}
+.marquee-inner{display:inline-flex;gap:3rem;animation:marquee 18s linear infinite;}
+.marquee-item{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--muted);}
+.marquee-item span{color:var(--accent);margin-right:3rem;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.section-header{display:flex;align-items:baseline;gap:1rem;padding:3rem 2.5rem 1.5rem;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.08em;color:var(--text);}
+.section-line{flex:1;height:1px;background:var(--border);}
+.section-count{font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;}
+.empty-state{text-align:center;padding:5rem 2rem;margin:0 2.5rem;border:1px dashed var(--border);}
+.empty-icon{font-size:3rem;opacity:0.2;margin-bottom:1rem;}
+.empty-text{font-family:'Oswald',sans-serif;font-size:1.2rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;}
+.empty-sub{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;opacity:0.6;}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);margin:0 2.5rem;}
+.card{background:var(--card);display:flex;flex-direction:column;transition:background 0.2s;position:relative;overflow:hidden;}
+.card:hover{background:#1c1c1c;}
+.card-img{aspect-ratio:1;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;font-size:5rem;}
+.card-badge{position:absolute;top:12px;left:12px;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.7rem;font-weight:700;}
+.card-badge.new{background:var(--accent);color:#0a0a0a;}
+.card-badge.sale{background:var(--red);color:#fff;}
+.card-badge.hot{background:var(--accent2);color:#fff;}
+.admin-del-btn{position:absolute;top:12px;right:12px;background:rgba(255,69,69,0.15);border:1px solid rgba(255,69,69,0.4);color:var(--red);width:28px;height:28px;display:none;align-items:center;justify-content:center;cursor:pointer;font-size:0.9rem;transition:all 0.2s;}
+.admin-del-btn:hover{background:var(--red);color:#fff;}
+.admin-mode .admin-del-btn{display:flex;}
+.card-body{padding:1.1rem 1.2rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:0.5rem;}
+.card-category{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);}
+.card-name{font-family:'Oswald',sans-serif;font-weight:600;font-size:1.05rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--text);line-height:1.3;}
+.card-desc{font-size:0.73rem;color:var(--muted);line-height:1.6;flex:1;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:0.8rem;padding-top:0.8rem;border-top:1px solid var(--border);}
+.card-price{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.05em;color:var(--accent);}
+.card-price .original{font-size:0.85rem;color:var(--muted);text-decoration:line-through;margin-right:0.4rem;font-family:'Space Mono',monospace;}
+.card-btns{display:flex;gap:0.4rem;}
+.card-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:0.45rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.card-btn:hover{background:var(--accent);border-color:var(--accent);color:#0a0a0a;}
+.card-btn-cart{background:var(--accent);border:1px solid var(--accent);color:#0a0a0a;padding:0.45rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.card-btn-cart:hover{opacity:0.8;}
+.admin-panel{display:none;background:var(--bg2);border:1px solid rgba(192,132,252,0.25);margin:0 2.5rem 2rem;overflow:hidden;}
+.admin-panel.open{display:block;}
+.admin-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg3);}
+.admin-tab{flex:1;padding:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;text-align:center;}
+.admin-tab:hover{color:var(--text);}
+.admin-tab.active{color:var(--accent2);border-bottom-color:var(--accent2);}
+.admin-tab-content{display:none;padding:2rem;}
+.admin-tab-content.active{display:block;}
+.ap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.8rem;}
+.ap-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.08em;color:var(--accent2);}
+.ap-badge{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.7rem;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.3);color:var(--accent2);}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem;}
+.stat-box{background:var(--bg3);border:1px solid var(--border);padding:1rem 1.2rem;}
+.stat-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.05em;color:var(--accent);}
+.ap-divider{height:1px;background:var(--border);margin:1.5rem 0;}
+.ap-section-title{font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text);margin-bottom:1.2rem;}
+.ap-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.ap-form-full{grid-column:1/-1;}
+.fgroup{display:flex;flex-direction:column;gap:0.4rem;}
+.flabel{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.finput,.fselect,.ftextarea{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.65rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.78rem;outline:none;transition:border-color 0.2s;width:100%;}
+.finput:focus,.fselect:focus,.ftextarea:focus{border-color:var(--accent2);}
+.fselect option{background:var(--bg3);}
+.ftextarea{resize:vertical;min-height:80px;}
+.ap-btn{border:none;padding:0.85rem 2rem;font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
+.ap-btn:hover{opacity:0.85;}
+.ap-btn.purple{background:var(--accent2);color:#fff;}
+.ap-btn.gold{background:var(--accent);color:#0a0a0a;}
+.ap-btn.red{background:var(--red);color:#fff;}
+.ap-btn.green{background:var(--green);color:#0a0a0a;}
+.ap-btn-sm{border:none;padding:0.4rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.ap-btn-sm.red{background:rgba(255,69,69,0.12);border:1px solid rgba(255,69,69,0.3);color:var(--red);}
+.ap-btn-sm.red:hover{background:var(--red);color:#fff;}
+.ap-btn-sm.green{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:var(--green);}
+.ap-btn-sm.green:hover{background:var(--green);color:#0a0a0a;}
+.ap-btn-sm.purple{background:rgba(192,132,252,0.1);border:1px solid rgba(192,132,252,0.3);color:var(--accent2);}
+.ap-btn-sm.purple:hover{background:var(--accent2);color:#fff;}
+.ap-btn-sm.gold{background:rgba(232,201,126,0.1);border:1px solid rgba(232,201,126,0.3);color:var(--accent);}
+.ap-btn-sm.gold:hover{background:var(--accent);color:#0a0a0a;}
+.ap-btn-wrap{grid-column:1/-1;display:flex;align-items:center;gap:1rem;margin-top:0.5rem;}
+.user-table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+.user-table th{text-align:left;padding:0.6rem 1rem;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);font-weight:400;}
+.user-table td{padding:0.8rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+.user-table tr:last-child td{border-bottom:none;}
+.user-table tr:hover td{background:rgba(255,255,255,0.02);}
+.user-role{display:inline-block;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.25rem 0.6rem;font-weight:700;}
+.user-role.owner{background:rgba(232,201,126,0.15);border:1px solid rgba(232,201,126,0.4);color:var(--accent);}
+.user-role.admin{background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.3);color:var(--accent2);}
+.user-role.user{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);}
+.user-role.banned{background:rgba(255,69,69,0.12);border:1px solid rgba(255,69,69,0.3);color:var(--red);}
+.user-actions{display:flex;gap:0.4rem;flex-wrap:wrap;}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--bg3);display:inline-flex;align-items:center;justify-content:center;font-size:0.9rem;margin-right:0.6rem;border:1px solid var(--border);vertical-align:middle;}
+.giveaway-card{background:var(--bg3);border:1px solid var(--border);padding:1.5rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.giveaway-info{flex:1;}
+.giveaway-prize{font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);margin-bottom:0.3rem;}
+.giveaway-meta{font-size:0.68rem;color:var(--muted);letter-spacing:0.05em;}
+.giveaway-status{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;font-weight:700;}
+.giveaway-status.active{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--green);}
+.giveaway-status.ended{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);}
+.giveaway-actions{display:flex;gap:0.5rem;align-items:center;}
+.announce-preview{background:var(--accent);color:#0a0a0a;text-align:center;padding:0.8rem;font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;margin-bottom:1rem;}
+.coupon-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1rem;background:var(--bg3);border:1px solid var(--border);margin-bottom:0.5rem;}
+.coupon-code-lbl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.15em;color:var(--accent);flex:1;}
+.coupon-meta{font-size:0.68rem;color:var(--muted);}
+.login-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;align-items:center;justify-content:center;}
+.login-overlay.open{display:flex;}
+.login-box{background:var(--bg2);border:1px solid rgba(192,132,252,0.3);padding:2.5rem;width:100%;max-width:380px;animation:slideUp 0.2s ease;}
+.login-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.08em;color:var(--accent2);margin-bottom:0.3rem;}
+.login-sub{font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;margin-bottom:2rem;}
+.login-group{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem;}
+.login-label{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.login-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.7rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.82rem;outline:none;width:100%;transition:border-color 0.2s;}
+.login-input:focus{border-color:var(--accent2);}
+.login-btn{width:100%;background:var(--accent2);border:none;color:#fff;padding:0.9rem;font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;margin-top:0.5rem;}
+.login-btn:hover{opacity:0.85;}
+.login-cancel{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.7rem;font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
+.login-cancel:hover{color:var(--text);}
+.login-err{font-size:0.7rem;color:var(--red);margin-top:0.5rem;display:none;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:520px;padding:2rem;position:relative;animation:slideUp 0.2s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.modal-emoji{font-size:3.5rem;margin-bottom:1rem;}
+.modal-cat{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;}
+.modal-name{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.06em;margin-bottom:0.5rem;}
+.modal-price{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent);margin-bottom:1rem;}
+.modal-desc{font-size:0.8rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
+.modal-buy{width:100%;background:var(--accent);border:none;color:#0a0a0a;padding:0.9rem;font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
+.modal-buy:hover{opacity:0.85;}
+/* CART */
+.cart-drawer{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:800;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
+.cart-drawer.open{transform:translateX(0);}
+.cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:799;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.cart-backdrop.open{opacity:1;pointer-events:all;}
+.cart-header{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.cart-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.08em;color:var(--text);}
+.cart-close-btn{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1;padding:0.2rem;}
+.cart-close-btn:hover{color:var(--text);}
+.cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem;}
+.cart-empty{text-align:center;padding:4rem 1rem;}
+.cart-empty-icon{font-size:2.5rem;opacity:0.2;margin-bottom:1rem;}
+.cart-empty-text{font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;}
+.cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.cart-item-emoji{font-size:2.2rem;width:50px;height:50px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-family:'Oswald',sans-serif;font-size:0.9rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--text);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-item-cat{font-size:0.62rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.cart-item-row{display:flex;align-items:center;gap:0.8rem;}
+.cart-qty{display:flex;align-items:center;border:1px solid var(--border);}
+.cart-qty-btn{background:none;border:none;color:var(--muted);width:26px;height:26px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.cart-qty-btn:hover{color:var(--text);background:var(--bg3);}
+.cart-qty-num{font-size:0.78rem;padding:0 0.5rem;min-width:24px;text-align:center;color:var(--text);}
+.cart-item-price{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--accent);letter-spacing:0.05em;}
+.cart-item-remove{background:none;border:none;color:rgba(255,69,69,0.5);cursor:pointer;font-size:0.9rem;margin-left:auto;padding:0.2rem;transition:color 0.2s;}
+.cart-item-remove:hover{color:var(--red);}
+/* COUPON IN CART */
+.cart-coupon-section{padding:0.8rem 0;border-bottom:1px solid var(--border);}
+.cart-coupon-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;}
+.cart-coupon-row{display:flex;gap:0.5rem;}
+.cart-coupon-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.55rem 0.8rem;font-family:'Space Mono',monospace;font-size:0.75rem;outline:none;text-transform:uppercase;transition:border-color 0.2s;}
+.cart-coupon-input:focus{border-color:var(--accent2);}
+.cart-coupon-input::placeholder{text-transform:none;color:var(--muted);}
+.cart-coupon-apply-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.55rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.cart-coupon-apply-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+.cart-coupon-applied{display:flex;align-items:center;justify-content:space-between;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.25);padding:0.5rem 0.8rem;margin-top:0.5rem;}
+.cart-coupon-applied-text{font-size:0.72rem;color:var(--green);letter-spacing:0.05em;}
+.cart-coupon-remove{background:none;border:none;color:rgba(255,69,69,0.6);font-size:0.85rem;cursor:pointer;padding:0;transition:color 0.2s;}
+.cart-coupon-remove:hover{color:var(--red);}
+.cart-footer{padding:1.2rem 1.5rem;border-top:1px solid var(--border);flex-shrink:0;}
+.cart-summary-row{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;letter-spacing:0.05em;}
+.cart-summary-row.discount{color:var(--green);}
+.cart-summary-row.total{color:var(--text);font-size:0.9rem;padding-top:0.6rem;border-top:1px solid var(--border);margin-top:0.6rem;}
+.cart-summary-row.total span:last-child{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--accent);letter-spacing:0.05em;}
+.cart-checkout-btn{width:100%;background:var(--accent);border:none;color:#0a0a0a;padding:1rem;font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;margin-bottom:0.6rem;margin-top:1rem;}
+.cart-checkout-btn:hover{opacity:0.85;}
+.cart-clear-btn{width:100%;background:transparent;border:1px solid rgba(255,69,69,0.25);color:rgba(255,69,69,0.7);padding:0.6rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.cart-clear-btn:hover{border-color:var(--red);color:var(--red);}
+/* CHECKOUT */
+.checkout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:900;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2rem 1rem;}
+.checkout-overlay.open{display:flex;}
+.checkout-box{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:640px;animation:slideUp 0.25s ease;margin:auto;}
+.checkout-header{padding:1.8rem 2rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.checkout-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.08em;color:var(--text);}
+.checkout-close{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;}
+.checkout-close:hover{color:var(--text);}
+.checkout-body{padding:2rem;}
+.checkout-step{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:1.2rem;display:flex;align-items:center;gap:0.8rem;}
+.checkout-step::after{content:'';flex:1;height:1px;background:var(--border);}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.checkout-full{grid-column:1/-1;}
+.checkout-field{display:flex;flex-direction:column;gap:0.4rem;}
+.checkout-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.checkout-input,.checkout-select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:0.7rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.78rem;outline:none;width:100%;transition:border-color 0.2s;}
+.checkout-input:focus,.checkout-select:focus{border-color:var(--accent2);}
+.checkout-select option{background:var(--bg3);}
+.checkout-order-summary{background:var(--bg3);border:1px solid var(--border);padding:1.2rem;margin-bottom:1.2rem;}
+.checkout-order-title{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
+.checkout-order-item{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.75rem;}
+.checkout-order-item:last-child{border-bottom:none;}
+.checkout-order-item-name{color:var(--text);}
+.checkout-order-item-qty{color:var(--muted);margin-left:0.4rem;}
+.checkout-order-item-price{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--accent);letter-spacing:0.05em;}
+.checkout-total-row{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);padding:0.35rem 0;}
+.checkout-total-row.discount-row{color:var(--green);}
+.checkout-total-row.grand{color:var(--text);font-size:0.85rem;padding-top:0.8rem;border-top:1px solid var(--border);margin-top:0.4rem;}
+.checkout-total-row.grand span:last-child{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--accent);}
+.checkout-pay-btn{width:100%;background:var(--accent);border:none;color:#0a0a0a;padding:1.1rem;font-family:'Space Mono',monospace;font-size:0.85rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;margin-top:1rem;}
+.checkout-pay-btn:hover{opacity:0.85;}
+.checkout-back-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.7rem;font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:0.6rem;}
+.checkout-back-btn:hover{color:var(--text);border-color:var(--text);}
+/* SUCCESS */
+.checkout-success{text-align:center;padding:3.5rem 2rem;}
+.success-icon{font-size:4rem;margin-bottom:1.2rem;display:block;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.success-title{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:0.08em;color:var(--green);margin-bottom:0.5rem;}
+.success-sub{font-size:0.8rem;color:var(--muted);line-height:1.8;margin-bottom:1.5rem;}
+.success-order-id{font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--accent);background:rgba(232,201,126,0.08);border:1px solid rgba(232,201,126,0.2);padding:0.7rem 1.4rem;display:inline-block;margin-bottom:2rem;letter-spacing:0.1em;}
+.success-done-btn{background:var(--accent);border:none;color:#0a0a0a;padding:0.9rem 2.5rem;font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
+.success-done-btn:hover{opacity:0.85;}
+/* CONFIRM */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;padding:1rem;}
+.confirm-overlay.open{display:flex;}
+.confirm-box{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:380px;padding:2rem;animation:slideUp 0.2s ease;text-align:center;}
+.confirm-icon{font-size:2.5rem;margin-bottom:1rem;}
+.confirm-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.06em;margin-bottom:0.5rem;}
+.confirm-msg{font-size:0.78rem;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
+.confirm-btns{display:flex;gap:0.8rem;}
+.confirm-btns button{flex:1;padding:0.8rem;font-family:'Space Mono',monospace;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border:none;transition:opacity 0.2s;}
+.confirm-btns button:hover{opacity:0.85;}
+.confirm-yes{background:var(--red);color:#fff;}
+.confirm-no{background:var(--bg3);border:1px solid var(--border)!important;color:var(--muted);}
+footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:var(--accent);}
+.footer-text{font-size:0.68rem;color:var(--muted);letter-spacing:0.08em;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{font-size:0.68rem;color:var(--muted);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;}
+.footer-links a:hover{color:var(--text);}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:0.8rem 1.5rem;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+.toast.success{background:var(--green);color:#0a0a0a;}
+.toast.info{background:var(--accent);color:#0a0a0a;}
+.toast.error{background:var(--red);color:#fff;}
+.toast.show{opacity:1;}
+.giveaway-banner{background:linear-gradient(135deg,rgba(192,132,252,0.15),rgba(232,201,126,0.08));border:1px solid rgba(192,132,252,0.3);margin:0 2.5rem;padding:1.2rem 1.8rem;display:flex;align-items:center;gap:1.2rem;margin-bottom:0.5rem;}
+.giveaway-banner-icon{font-size:2rem;}
+.giveaway-banner-text{flex:1;}
+.giveaway-banner-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--accent2);}
+.giveaway-banner-sub{font-size:0.7rem;color:var(--muted);}
+.giveaway-enter-btn{background:var(--accent2);border:none;color:#fff;padding:0.6rem 1.4rem;font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
+.giveaway-enter-btn:hover{opacity:0.85;}
+.giveaway-enter-btn:disabled{opacity:0.4;cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<div class="announce" id="announceBanner">⚡ Free delivery on orders over $50 — Limited time only ⚡</div>
+
+<nav>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Products</a></li>
+    <li><a href="#">Deals</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="nav-btn" id="adminToggleBtn" onclick="toggleAdmin()">⚙ Admin</button>
+    <button class="nav-cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count-badge" id="cartCountBadge">0</span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="logo-stack">
+    <div class="logo-john">John</div>
+    <div class="logo-apostrophe">'s</div>
+    <div class="logo-shop-wrap">
+      <span class="logo-shop-s">S</span>
+      <span class="logo-shop-hop">hop</span>
+    </div>
+  </div>
+  <p class="hero-tagline">Premium goods. No fluff. Just quality.</p>
+  <div class="hero-badges">
+    <span class="hbadge hot">🔥 New Drops</span>
+    <span class="hbadge">Instant Delivery</span>
+    <span class="hbadge">Secure Checkout</span>
+    <span class="hbadge">24/7 Support</span>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span class="marquee-item">JOHN'S SHOP <span>★</span></span>
+    <span class="marquee-item">PREMIUM QUALITY <span>★</span></span>
+    <span class="marquee-item">FAST DELIVERY <span>★</span></span>
+    <span class="marquee-item">BEST PRICES <span>★</span></span>
+    <span class="marquee-item">SECURE CHECKOUT <span>★</span></span>
+    <span class="marquee-item">JOHN'S SHOP <span>★</span></span>
+    <span class="marquee-item">PREMIUM QUALITY <span>★</span></span>
+    <span class="marquee-item">FAST DELIVERY <span>★</span></span>
+    <span class="marquee-item">BEST PRICES <span>★</span></span>
+    <span class="marquee-item">SECURE CHECKOUT <span>★</span></span>
+  </div>
+</div>
+
+<div id="giveawayBanner" style="display:none;margin-top:1.5rem;">
+  <div class="giveaway-banner">
+    <div class="giveaway-banner-icon">🎁</div>
+    <div class="giveaway-banner-text">
+      <div class="giveaway-banner-title" id="gBannerTitle">Giveaway!</div>
+      <div class="giveaway-banner-sub" id="gBannerSub"></div>
+    </div>
+    <button class="giveaway-enter-btn" id="gEnterBtn" onclick="enterGiveaway()">Enter Now</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchTab('listings',this)">📦 Listings</button>
+    <button class="admin-tab" onclick="switchTab('users',this)">👥 Users</button>
+    <button class="admin-tab" onclick="switchTab('giveaways',this)">🎁 Giveaways</button>
+    <button class="admin-tab" onclick="switchTab('coupons',this)">🏷 Coupons</button>
+    <button class="admin-tab" onclick="switchTab('settings',this)">⚙ Settings</button>
+  </div>
+  <div class="admin-tab-content active" id="tab-listings">
+    <div class="ap-header">
+      <div style="display:flex;align-items:center;gap:1rem;"><div class="ap-title">Listings</div><span class="ap-badge">● Admin</span></div>
+      <button onclick="logout()" style="background:transparent;border:1px solid rgba(255,69,69,0.3);color:var(--red);padding:0.4rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Log Out</button>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-label">Listings</div><div class="stat-value" id="stat-total">0</div></div>
+      <div class="stat-box"><div class="stat-label">Total Value</div><div class="stat-value" id="stat-value">$0</div></div>
+      <div class="stat-box"><div class="stat-label">Categories</div><div class="stat-value" id="stat-cats">0</div></div>
+      <div class="stat-box"><div class="stat-label">Users</div><div class="stat-value" id="stat-users">0</div></div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">+ List a New Item for Sale</div>
+    <div class="ap-form">
+      <div class="fgroup"><label class="flabel">Product Name *</label><input class="finput" id="f-name" placeholder="e.g. Discord Nitro 1 Month"/></div>
+      <div class="fgroup"><label class="flabel">Category *</label><input class="finput" id="f-cat" placeholder="e.g. Social, Gaming, Digital"/></div>
+      <div class="fgroup"><label class="flabel">Price ($) *</label><input class="finput" id="f-price" type="number" min="0" step="0.01" placeholder="9.99"/></div>
+      <div class="fgroup"><label class="flabel">Original Price (optional)</label><input class="finput" id="f-original" type="number" min="0" step="0.01" placeholder="Leave blank if no discount"/></div>
+      <div class="fgroup"><label class="flabel">Emoji Icon</label><input class="finput" id="f-emoji" placeholder="🎮" maxlength="4"/></div>
+      <div class="fgroup"><label class="flabel">Badge</label>
+        <select class="fselect" id="f-badge"><option value="">None</option><option value="new">✦ New</option><option value="hot">🔥 Hot</option><option value="sale">% Sale</option></select>
+      </div>
+      <div class="fgroup ap-form-full"><label class="flabel">Description *</label><textarea class="ftextarea" id="f-desc" placeholder="Describe what the buyer gets, delivery method, etc."></textarea></div>
+      <div class="ap-btn-wrap"><button class="ap-btn purple" onclick="addListing()">+ List Item for Sale</button></div>
+    </div>
+  </div>
+  <div class="admin-tab-content" id="tab-users">
+    <div class="ap-header"><div class="ap-title">User Management</div></div>
+    <div class="ap-section-title">Add New Account</div>
+    <div class="ap-form" style="margin-bottom:2rem;">
+      <div class="fgroup"><label class="flabel">Username *</label><input class="finput" id="nu-name" placeholder="username"/></div>
+      <div class="fgroup"><label class="flabel">Password *</label><input class="finput" id="nu-pass" type="password" placeholder="password"/></div>
+      <div class="fgroup"><label class="flabel">Role</label><select class="fselect" id="nu-role"><option value="user">User</option><option value="admin">Admin</option></select></div>
+      <div class="fgroup"><label class="flabel">Display Name</label><input class="finput" id="nu-display" placeholder="John Doe"/></div>
+      <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="addUser()">+ Create Account</button></div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">All Accounts</div>
+    <table class="user-table">
+      <thead><tr><th>User</th><th>Username</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
+      <tbody id="userTableBody"></tbody>
+    </table>
+  </div>
+  <div class="admin-tab-content" id="tab-giveaways">
+    <div class="ap-header"><div class="ap-title">Giveaways</div></div>
+    <div class="ap-section-title">Create Giveaway</div>
+    <div class="ap-form" style="margin-bottom:2rem;">
+      <div class="fgroup"><label class="flabel">Prize *</label><input class="finput" id="gw-prize" placeholder="e.g. Discord Nitro 3 Months"/></div>
+      <div class="fgroup"><label class="flabel">Emoji</label><input class="finput" id="gw-emoji" placeholder="🎁" maxlength="4"/></div>
+      <div class="fgroup"><label class="flabel">Description</label><input class="finput" id="gw-desc" placeholder="1 lucky winner gets..."/></div>
+      <div class="fgroup"><label class="flabel">Winners</label><input class="finput" id="gw-winners" type="number" min="1" value="1"/></div>
+      <div class="ap-btn-wrap"><button class="ap-btn green" onclick="createGiveaway()">🎉 Launch Giveaway</button></div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">All Giveaways</div>
+    <div id="giveawayList"><div style="color:var(--muted);font-size:0.78rem;">No giveaways yet.</div></div>
+  </div>
+  <div class="admin-tab-content" id="tab-coupons">
+    <div class="ap-header"><div class="ap-title">Discount Coupons</div></div>
+    <div class="ap-section-title">Create Coupon</div>
+    <div class="ap-form" style="margin-bottom:2rem;">
+      <div class="fgroup"><label class="flabel">Coupon Code *</label><input class="finput" id="cp-code" placeholder="SAVE20" style="text-transform:uppercase"/></div>
+      <div class="fgroup"><label class="flabel">Discount Type</label><select class="fselect" id="cp-type"><option value="percent">Percent Off (%)</option><option value="fixed">Fixed Amount ($)</option></select></div>
+      <div class="fgroup"><label class="flabel">Amount *</label><input class="finput" id="cp-amount" type="number" min="1" placeholder="20"/></div>
+      <div class="fgroup"><label class="flabel">Max Uses (0 = unlimited)</label><input class="finput" id="cp-uses" type="number" min="0" value="0"/></div>
+      <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="createCoupon()">+ Create Coupon</button></div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">Active Coupons</div>
+    <div id="couponList"><div style="color:var(--muted);font-size:0.78rem;">No coupons yet.</div></div>
+  </div>
+  <div class="admin-tab-content" id="tab-settings">
+    <div class="ap-header"><div class="ap-title">Shop Settings</div></div>
+    <div class="ap-section-title">Announcement Banner</div>
+    <div style="margin-bottom:1.5rem;">
+      <div class="announce-preview" id="announcePreview">⚡ Free delivery on orders over $50 — Limited time only ⚡</div>
+      <div class="ap-form">
+        <div class="fgroup ap-form-full"><label class="flabel">Banner Text</label><input class="finput" id="set-announce" value="⚡ Free delivery on orders over $50 — Limited time only ⚡" oninput="previewAnnounce(this.value)"/></div>
+        <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="saveAnnounce()">Save Banner</button></div>
+      </div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">Shop Status</div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+      <button class="ap-btn green" onclick="setShopStatus('open')">✓ Set Shop Open</button>
+      <button class="ap-btn red" onclick="setShopStatus('closed')">✕ Set Shop Closed</button>
+    </div>
+    <div style="margin-top:1rem;font-size:0.75rem;color:var(--muted);">Current status: <span id="shopStatusLabel" style="color:var(--green);font-weight:700;">OPEN</span></div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">Change Admin Password</div>
+    <div class="ap-form">
+      <div class="fgroup"><label class="flabel">New Password *</label><input class="finput" id="set-pass" type="password" placeholder="New password"/></div>
+      <div class="fgroup"><label class="flabel">Confirm Password *</label><input class="finput" id="set-pass2" type="password" placeholder="Confirm password"/></div>
+      <div class="ap-btn-wrap"><button class="ap-btn purple" onclick="changePassword()">Update Password</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section-header">
+  <h2 class="section-title">Products</h2>
+  <div class="section-line"></div>
+  <span class="section-count" id="countLabel">0 items</span>
+</div>
+<div id="emptyState" class="empty-state">
+  <div class="empty-icon">🛒</div>
+  <div class="empty-text">No listings yet</div>
+  <div class="empty-sub">Admins can add products using the panel above.</div>
+</div>
+<div class="products" id="products"></div>
+
+<footer>
+  <div class="footer-logo">John's Shop</div>
+  <div class="footer-links"><a href="#">Discord</a><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Contact</a></div>
+  <div class="footer-text">© 2025 John's Shop. All rights reserved.</div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">Your Cart</div>
+    <button class="cart-close-btn" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-coupon-section">
+      <div class="cart-coupon-label">🏷 Coupon Code</div>
+      <div id="couponAppliedDisplay" style="display:none;" class="cart-coupon-applied">
+        <span class="cart-coupon-applied-text" id="couponAppliedText"></span>
+        <button class="cart-coupon-remove" onclick="removeCoupon()" title="Remove">✕</button>
+      </div>
+      <div id="couponInputWrap" class="cart-coupon-row">
+        <input class="cart-coupon-input" id="cartCouponInput" placeholder="Enter code..." maxlength="20" onkeydown="if(event.key==='Enter')applyCoupon()"/>
+        <button class="cart-coupon-apply-btn" onclick="applyCoupon()">Apply</button>
+      </div>
+    </div>
+    <div class="cart-summary-row"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+    <div class="cart-summary-row discount" id="cartDiscountRow" style="display:none;">
+      <span id="cartDiscountLabel">Discount</span><span id="cartDiscountAmt">-$0.00</span>
+    </div>
+    <div class="cart-summary-row"><span>Shipping</span><span id="cartShipping">Free</span></div>
+    <div class="cart-summary-row total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="cart-checkout-btn" onclick="openCheckout()">Checkout →</button>
+    <button class="cart-clear-btn" onclick="clearCart()">Clear Cart</button>
+  </div>
+</div>
+
+<!-- CHECKOUT OVERLAY -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-box" id="checkoutBox"></div>
+</div>
+
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-title">Admin Login</div>
+    <div class="login-sub">Enter your admin credentials to continue.</div>
+    <div class="login-group"><label class="login-label">Username</label><input class="login-input" id="loginUser" type="text" placeholder="admin" autocomplete="off"/></div>
+    <div class="login-group"><label class="login-label">Password</label><input class="login-input" id="loginPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="login-err" id="loginErr">Incorrect username or password.</div>
+    <button class="login-btn" onclick="doLogin()">Login →</button>
+    <button class="login-cancel" onclick="cancelLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">×</button>
+    <div class="modal-emoji" id="m-emoji"></div>
+    <div class="modal-cat" id="m-cat"></div>
+    <div class="modal-name" id="m-name"></div>
+    <div class="modal-price" id="m-price"></div>
+    <div class="modal-desc" id="m-desc"></div>
+    <button class="modal-buy" id="m-buy-btn">Add to Cart</button>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirmIcon">⚠️</div>
+    <div class="confirm-title" id="confirmTitle">Are you sure?</div>
+    <div class="confirm-msg" id="confirmMsg"></div>
+    <div class="confirm-btns">
+      <button class="confirm-no" onclick="document.getElementById('confirmOverlay').classList.remove('open')">Cancel</button>
+      <button class="confirm-yes" id="confirmYesBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let ADMIN_PASS = 'johns2025';
+let isAdmin = false;
+let products = [];
+let cart = [];
+let users = [
+  {id:1,username:'owner',display:'John (Owner)',role:'owner',joined:'2025-01-01',banned:false},
+  {id:2,username:'admin',display:'Admin',role:'admin',joined:'2025-01-01',banned:false},
+];
+let nextUserId = 3;
+let giveaways = [];
+let coupons = [];
+let shopOpen = true;
+let appliedCoupon = null;
+
+function switchTab(name,el){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+function render(){
+  const grid=document.getElementById('products');
+  const empty=document.getElementById('emptyState');
+  document.getElementById('countLabel').textContent=products.length+' item'+(products.length!==1?'s':'');
+  grid.innerHTML='';
+  if(products.length===0){empty.style.display='block';grid.style.display='none';updateStats();return;}
+  empty.style.display='none';grid.style.display='grid';
+  products.forEach((p,i)=>{
+    const card=document.createElement('div');card.className='card';
+    card.innerHTML=`
+      <div class="card-img">${p.emoji||'📦'}
+        ${p.badge?`<span class="card-badge ${p.badge}">${p.badge==='hot'?'🔥 Hot':p.badge==='new'?'✦ New':'% Sale'}</span>`:''}
+        <button class="admin-del-btn" onclick="deleteItem(${i},event)">✕</button>
+      </div>
+      <div class="card-body">
+        <div class="card-category">${p.category}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc.length>65?p.desc.substring(0,65)+'…':p.desc}</div>
+        <div class="card-footer">
+          <div class="card-price">${p.original?`<span class="original">$${parseFloat(p.original).toFixed(2)}</span>`:''} $${parseFloat(p.price).toFixed(2)}</div>
+          <div class="card-btns">
+            <button class="card-btn" onclick="openModal(${i})">View</button>
+            <button class="card-btn-cart" onclick="addToCart(${i},event)">+ Cart</button>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  if(isAdmin)grid.classList.add('admin-mode');else grid.classList.remove('admin-mode');
+  updateStats();
+}
+
+function updateStats(){
+  document.getElementById('stat-total').textContent=products.length;
+  const tv=products.reduce((s,p)=>s+parseFloat(p.price),0);
+  document.getElementById('stat-value').textContent='$'+tv.toFixed(2);
+  document.getElementById('stat-cats').textContent=new Set(products.map(p=>p.category)).size;
+  document.getElementById('stat-users').textContent=users.length;
+}
+
+function addListing(){
+  const name=document.getElementById('f-name').value.trim();
+  const cat=document.getElementById('f-cat').value.trim();
+  const price=document.getElementById('f-price').value.trim();
+  const desc=document.getElementById('f-desc').value.trim();
+  if(!name||!cat||!price||!desc){showToast('Fill in all required fields!','error');return;}
+  if(isNaN(parseFloat(price))||parseFloat(price)<0){showToast('Enter a valid price.','error');return;}
+  const original=document.getElementById('f-original').value.trim();
+  const emoji=document.getElementById('f-emoji').value.trim()||'📦';
+  const badge=document.getElementById('f-badge').value;
+  products.push({name,category:cat,price,original:original||null,emoji,badge:badge||null,desc});
+  ['f-name','f-cat','f-price','f-original','f-emoji','f-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-badge').value='';
+  showToast('Listing added!','success');render();
+}
+
+function deleteItem(i,e){
+  e.stopPropagation();
+  confirmAction('🗑️','Delete Listing','Remove "'+products[i].name+'" from the shop?',()=>{
+    cart=cart.filter(c=>c.productIdx!==i).map(c=>({...c,productIdx:c.productIdx>i?c.productIdx-1:c.productIdx}));
+    products.splice(i,1);updateCartBadge();renderCart();showToast('Listing removed.','error');render();
+  });
+}
+
+function addUser(){
+  const username=document.getElementById('nu-name').value.trim();
+  const pass=document.getElementById('nu-pass').value.trim();
+  const role=document.getElementById('nu-role').value;
+  const display=document.getElementById('nu-display').value.trim()||username;
+  if(!username||!pass){showToast('Username and password required.','error');return;}
+  if(users.find(u=>u.username===username)){showToast('Username already taken.','error');return;}
+  users.push({id:nextUserId++,username,display,role,joined:new Date().toISOString().split('T')[0],banned:false,pass});
+  ['nu-name','nu-pass','nu-display'].forEach(id=>document.getElementById(id).value='');
+  showToast(`Account "${username}" created!`,'success');renderUsers();updateStats();
+}
+
+function renderUsers(){
+  const tbody=document.getElementById('userTableBody');tbody.innerHTML='';
+  users.forEach((u,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><span class="user-avatar">${(u.display||u.username).charAt(0).toUpperCase()}</span>${u.display||u.username}</td>
+      <td style="color:var(--muted);font-size:0.75rem;">@${u.username}</td>
+      <td><span class="user-role ${u.banned?'banned':u.role}">${u.banned?'BANNED':u.role.toUpperCase()}</span></td>
+      <td style="color:var(--muted);font-size:0.72rem;">${u.joined}</td>
+      <td><div class="user-actions">
+        ${u.role!=='owner'?`
+          ${!u.banned?`<button class="ap-btn-sm red" onclick="banUser(${i})">Ban</button>`:`<button class="ap-btn-sm green" onclick="unbanUser(${i})">Unban</button>`}
+          ${u.role==='user'?`<button class="ap-btn-sm purple" onclick="promoteUser(${i})">Make Admin</button>`:''}
+          ${u.role==='admin'?`<button class="ap-btn-sm gold" onclick="demoteUser(${i})">Remove Admin</button>`:''}
+          <button class="ap-btn-sm red" style="opacity:0.7;" onclick="deleteUser(${i})">Delete</button>
+        `:'<span style="font-size:0.65rem;color:var(--muted);">Owner — protected</span>'}
+      </div></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function banUser(i){confirmAction('🔨','Ban User','Ban @'+users[i].username+'?',()=>{users[i].banned=true;showToast('Banned.','error');renderUsers();});}
+function unbanUser(i){users[i].banned=false;showToast('Unbanned.','success');renderUsers();}
+function promoteUser(i){confirmAction('⭐','Promote','Give @'+users[i].username+' admin?',()=>{users[i].role='admin';showToast('Promoted!','success');renderUsers();});}
+function demoteUser(i){users[i].role='user';showToast('Demoted.','info');renderUsers();}
+function deleteUser(i){
+  if(users[i].role==='owner'){showToast('Cannot delete owner.','error');return;}
+  confirmAction('🗑️','Delete Account','Delete @'+users[i].username+'?',()=>{users.splice(i,1);showToast('Deleted.','error');renderUsers();updateStats();});
+}
+
+function createGiveaway(){
+  const prize=document.getElementById('gw-prize').value.trim();
+  const emoji=document.getElementById('gw-emoji').value.trim()||'🎁';
+  const desc=document.getElementById('gw-desc').value.trim()||'Enter for a chance to win!';
+  const winners=parseInt(document.getElementById('gw-winners').value)||1;
+  if(!prize){showToast('Prize name required.','error');return;}
+  giveaways.unshift({id:Date.now(),prize,emoji,desc,winners,status:'active',entries:[],created:new Date().toLocaleDateString()});
+  ['gw-prize','gw-emoji','gw-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('gw-winners').value='1';
+  showToast('Giveaway launched! 🎉','success');renderGiveaways();updateGiveawayBanner();
+}
+function renderGiveaways(){
+  const el=document.getElementById('giveawayList');
+  if(!giveaways.length){el.innerHTML='<div style="color:var(--muted);font-size:0.78rem;">No giveaways yet.</div>';return;}
+  el.innerHTML='';
+  giveaways.forEach((gw,i)=>{
+    const div=document.createElement('div');div.className='giveaway-card';
+    div.innerHTML=`<div style="font-size:2rem;">${gw.emoji}</div>
+      <div class="giveaway-info">
+        <div class="giveaway-prize">${gw.emoji} ${gw.prize}</div>
+        <div class="giveaway-meta">${gw.entries.length} entries · ${gw.winners} winner(s) · ${gw.created}</div>
+        ${gw.winner?`<div style="font-size:0.72rem;color:var(--green);margin-top:0.3rem;">🏆 Winner: ${gw.winner}</div>`:''}
+      </div>
+      <span class="giveaway-status ${gw.status}">${gw.status.toUpperCase()}</span>
+      <div class="giveaway-actions">
+        ${gw.status==='active'?`<button class="ap-btn-sm green" onclick="pickWinner(${i})">Pick Winner</button><button class="ap-btn-sm red" onclick="endGiveaway(${i})">End</button>`:''}
+        <button class="ap-btn-sm red" style="opacity:0.6;" onclick="deleteGiveaway(${i})">Delete</button>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+function endGiveaway(i){giveaways[i].status='ended';showToast('Ended.','info');renderGiveaways();updateGiveawayBanner();}
+function deleteGiveaway(i){confirmAction('🗑️','Delete Giveaway','Delete permanently?',()=>{giveaways.splice(i,1);showToast('Deleted.','error');renderGiveaways();updateGiveawayBanner();});}
+function pickWinner(i){
+  const gw=giveaways[i];
+  if(!gw.entries.length){showToast('No entries yet!','error');return;}
+  gw.winner=gw.entries[Math.floor(Math.random()*gw.entries.length)];
+  gw.status='ended';showToast('🏆 Winner: '+gw.winner,'success');renderGiveaways();updateGiveawayBanner();
+}
+function updateGiveawayBanner(){
+  const active=giveaways.find(g=>g.status==='active');
+  const banner=document.getElementById('giveawayBanner');
+  if(active){
+    document.getElementById('gBannerTitle').textContent=active.emoji+' GIVEAWAY: '+active.prize;
+    document.getElementById('gBannerSub').textContent=active.desc+' · '+active.entries.length+' entries';
+    banner.style.display='block';
+  }else{banner.style.display='none';}
+}
+function enterGiveaway(){
+  const active=giveaways.find(g=>g.status==='active');if(!active)return;
+  active.entries.push('Guest_'+Math.floor(Math.random()*9999));
+  document.getElementById('gEnterBtn').disabled=true;
+  document.getElementById('gEnterBtn').textContent='Entered ✓';
+  showToast('You entered! Good luck 🍀','success');renderGiveaways();updateGiveawayBanner();
+}
+
+function createCoupon(){
+  const code=document.getElementById('cp-code').value.trim().toUpperCase();
+  const type=document.getElementById('cp-type').value;
+  const amount=parseFloat(document.getElementById('cp-amount').value);
+  const maxUses=parseInt(document.getElementById('cp-uses').value)||0;
+  if(!code||isNaN(amount)||amount<=0){showToast('Fill in all coupon fields.','error');return;}
+  if(coupons.find(c=>c.code===code)){showToast('Code already exists.','error');return;}
+  coupons.push({code,type,amount,maxUses,uses:0,active:true});
+  ['cp-code','cp-amount'].forEach(id=>document.getElementById(id).value='');
+  showToast('Coupon "'+code+'" created!','success');renderCoupons();
+}
+function renderCoupons(){
+  const el=document.getElementById('couponList');
+  if(!coupons.length){el.innerHTML='<div style="color:var(--muted);font-size:0.78rem;">No coupons yet.</div>';return;}
+  el.innerHTML='';
+  coupons.forEach((c,i)=>{
+    const div=document.createElement('div');div.className='coupon-row';
+    const disc=c.type==='percent'?c.amount+'% OFF':'$'+c.amount+' OFF';
+    const usage=c.maxUses>0?c.uses+'/'+c.maxUses+' used':c.uses+' used (unlimited)';
+    div.innerHTML=`
+      <div class="coupon-code-lbl">${c.code}</div>
+      <div class="coupon-meta">${disc} · ${usage}</div>
+      <span class="giveaway-status ${c.active?'active':'ended'}">${c.active?'ACTIVE':'DISABLED'}</span>
+      <button class="ap-btn-sm ${c.active?'red':'green'}" onclick="toggleCoupon(${i})">${c.active?'Disable':'Enable'}</button>
+      <button class="ap-btn-sm red" style="opacity:0.6;" onclick="deleteCoupon(${i})">Delete</button>`;
+    el.appendChild(div);
+  });
+}
+function toggleCoupon(i){coupons[i].active=!coupons[i].active;showToast('Coupon '+(coupons[i].active?'enabled':'disabled')+'.','info');renderCoupons();}
+function deleteCoupon(i){coupons.splice(i,1);showToast('Deleted.','error');renderCoupons();}
+
+// ── Coupon application
+function applyCoupon(){
+  const code=document.getElementById('cartCouponInput').value.trim().toUpperCase();
+  if(!code){showToast('Enter a coupon code.','error');return;}
+  const coupon=coupons.find(c=>c.code===code&&c.active);
+  if(!coupon){showToast('Invalid or expired coupon.','error');return;}
+  if(coupon.maxUses>0&&coupon.uses>=coupon.maxUses){showToast('Coupon usage limit reached.','error');return;}
+  appliedCoupon=coupon;
+  document.getElementById('cartCouponInput').value='';
+  document.getElementById('couponInputWrap').style.display='none';
+  document.getElementById('couponAppliedDisplay').style.display='flex';
+  const disc=coupon.type==='percent'?coupon.amount+'% OFF':'$'+coupon.amount.toFixed(2)+' OFF';
+  document.getElementById('couponAppliedText').textContent=coupon.code+' — '+disc+' applied!';
+  showToast('Coupon applied! 🎉','success');renderCart();
+}
+function removeCoupon(){
+  appliedCoupon=null;
+  document.getElementById('couponInputWrap').style.display='flex';
+  document.getElementById('couponAppliedDisplay').style.display='none';
+  showToast('Coupon removed.','info');renderCart();
+}
+
+function previewAnnounce(v){document.getElementById('announcePreview').textContent=v||'(empty)';}
+function saveAnnounce(){document.getElementById('announceBanner').textContent=document.getElementById('set-announce').value.trim();showToast('Banner updated!','success');}
+function setShopStatus(s){shopOpen=s==='open';document.getElementById('shopStatusLabel').textContent=shopOpen?'OPEN':'CLOSED';document.getElementById('shopStatusLabel').style.color=shopOpen?'var(--green)':'var(--red)';showToast('Shop is '+(shopOpen?'OPEN':'CLOSED')+'.',shopOpen?'success':'info');}
+function changePassword(){
+  const p1=document.getElementById('set-pass').value;
+  const p2=document.getElementById('set-pass2').value;
+  if(!p1||!p2){showToast('Fill both fields.','error');return;}
+  if(p1!==p2){showToast('Passwords do not match.','error');return;}
+  if(p1.length<6){showToast('Min 6 characters.','error');return;}
+  ADMIN_PASS=p1;document.getElementById('set-pass').value='';document.getElementById('set-pass2').value='';
+  showToast('Password updated!','success');
+}
+
+// ── Cart
+function addToCart(productIdx,e){
+  if(e)e.stopPropagation();
+  const ex=cart.find(c=>c.productIdx===productIdx);
+  if(ex)ex.qty++;else cart.push({productIdx,qty:1});
+  updateCartBadge();renderCart();showToast('Added to cart!','success');
+}
+function removeFromCart(ci){cart.splice(ci,1);updateCartBadge();renderCart();}
+function changeQty(ci,delta){
+  cart[ci].qty+=delta;
+  if(cart[ci].qty<=0){removeFromCart(ci);return;}
+  updateCartBadge();renderCart();
+}
+function clearCart(){
+  cart=[];appliedCoupon=null;updateCartBadge();renderCart();showToast('Cart cleared.','info');
+  document.getElementById('couponInputWrap').style.display='flex';
+  document.getElementById('couponAppliedDisplay').style.display='none';
+}
+function updateCartBadge(){document.getElementById('cartCountBadge').textContent=cart.reduce((s,c)=>s+c.qty,0);}
+
+function calcTotals(){
+  const subtotal=cart.reduce((s,item)=>{const p=products[item.productIdx];return p?s+parseFloat(p.price)*item.qty:s;},0);
+  let discount=0;
+  if(appliedCoupon){
+    discount=appliedCoupon.type==='percent'?subtotal*(appliedCoupon.amount/100):Math.min(appliedCoupon.amount,subtotal);
+  }
+  const after=subtotal-discount;
+  const shipping=after>=50?0:4.99;
+  return{subtotal,discount,after,shipping,total:after+shipping};
+}
+
+function renderCart(){
+  const container=document.getElementById('cartItems');
+  const footer=document.getElementById('cartFooter');
+  container.innerHTML='';
+  if(!cart.length){
+    container.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div class="cart-empty-text">Your cart is empty</div></div>';
+    footer.style.display='none';return;
+  }
+  cart.forEach((item,ci)=>{
+    const p=products[item.productIdx];if(!p)return;
+    const line=parseFloat(p.price)*item.qty;
+    const row=document.createElement('div');row.className='cart-item';
+    row.innerHTML=`
+      <div class="cart-item-emoji">${p.emoji||'📦'}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-cat">${p.category}</div>
+        <div class="cart-item-row">
+          <div class="cart-qty">
+            <button class="cart-qty-btn" onclick="changeQty(${ci},-1)">−</button>
+            <span class="cart-qty-num">${item.qty}</span>
+            <button class="cart-qty-btn" onclick="changeQty(${ci},1)">+</button>
+          </div>
+          <div class="cart-item-price">$${line.toFixed(2)}</div>
+          <button class="cart-item-remove" onclick="removeFromCart(${ci})">✕</button>
+        </div>
+      </div>`;
+    container.appendChild(row);
+  });
+  const {subtotal,discount,shipping,total}=calcTotals();
+  document.getElementById('cartSubtotal').textContent='$'+subtotal.toFixed(2);
+  const dr=document.getElementById('cartDiscountRow');
+  if(discount>0){
+    dr.style.display='flex';
+    document.getElementById('cartDiscountLabel').textContent='Coupon ('+appliedCoupon.code+')';
+    document.getElementById('cartDiscountAmt').textContent='-$'+discount.toFixed(2);
+  }else{dr.style.display='none';}
+  document.getElementById('cartShipping').textContent=shipping===0?'Free':'$4.99';
+  document.getElementById('cartTotal').textContent='$'+total.toFixed(2);
+  footer.style.display='block';
+}
+function openCart(){renderCart();document.getElementById('cartDrawer').classList.add('open');document.getElementById('cartBackdrop').classList.add('open');}
+function closeCart(){document.getElementById('cartDrawer').classList.remove('open');document.getElementById('cartBackdrop').classList.remove('open');}
+
+// ── Checkout
+function openCheckout(){
+  if(!cart.length)return;
+  closeCart();
+  buildCheckoutForm();
+  document.getElementById('checkoutOverlay').classList.add('open');
+}
+function closeCheckout(){document.getElementById('checkoutOverlay').classList.remove('open');}
+
+function buildCheckoutForm(){
+  const {subtotal,discount,shipping,total}=calcTotals();
+  const items=cart.map(item=>{
+    const p=products[item.productIdx];if(!p)return'';
+    return`<div class="checkout-order-item">
+      <span class="checkout-order-item-name">${p.emoji||'📦'} ${p.name} <span class="checkout-order-item-qty">×${item.qty}</span></span>
+      <span class="checkout-order-item-price">$${(parseFloat(p.price)*item.qty).toFixed(2)}</span>
+    </div>`;
+  }).join('');
+  const discRow=discount>0?`<div class="checkout-total-row discount-row"><span>Coupon (${appliedCoupon.code})</span><span>-$${discount.toFixed(2)}</span></div>`:'';
+
+  document.getElementById('checkoutBox').innerHTML=`
+    <div class="checkout-header">
+      <div class="checkout-title">Checkout</div>
+      <button class="checkout-close" onclick="closeCheckout()">×</button>
+    </div>
+    <div class="checkout-body">
+      <div class="checkout-step">01 — Contact Information</div>
+      <div class="checkout-grid">
+        <div class="checkout-field">
+          <label class="checkout-label">First Name *</label>
+          <input class="checkout-input" id="co-fname" placeholder="John"/>
+        </div>
+        <div class="checkout-field">
+          <label class="checkout-label">Last Name *</label>
+          <input class="checkout-input" id="co-lname" placeholder="Doe"/>
+        </div>
+        <div class="checkout-field checkout-full">
+          <label class="checkout-label">Email Address *</label>
+          <input class="checkout-input" id="co-email" type="email" placeholder="john@example.com"/>
+        </div>
+        <div class="checkout-field checkout-full">
+          <label class="checkout-label">Discord Username (optional)</label>
+          <input class="checkout-input" id="co-discord" placeholder="john#0001"/>
+        </div>
+      </div>
+
+      <div class="checkout-step" style="margin-top:1.5rem;">02 — Payment Details</div>
+      <div class="checkout-grid">
+        <div class="checkout-field checkout-full">
+          <label class="checkout-label">Card Number *</label>
+          <input class="checkout-input" id="co-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/>
+        </div>
+        <div class="checkout-field">
+          <label class="checkout-label">Expiry (MM/YY) *</label>
+          <input class="checkout-input" id="co-expiry" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"/>
+        </div>
+        <div class="checkout-field">
+          <label class="checkout-label">CVV *</label>
+          <input class="checkout-input" id="co-cvv" placeholder="123" maxlength="4" type="password"/>
+        </div>
+        <div class="checkout-field checkout-full">
+          <label class="checkout-label">Name on Card *</label>
+          <input class="checkout-input" id="co-cardname" placeholder="John Doe"/>
+        </div>
+      </div>
+
+      <div class="checkout-step" style="margin-top:1.5rem;">03 — Order Summary</div>
+      <div class="checkout-order-summary">
+        <div class="checkout-order-title">Items in your order</div>
+        ${items}
+      </div>
+      <div class="checkout-total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+      ${discRow}
+      <div class="checkout-total-row"><span>Shipping</span><span>${shipping===0?'Free':'$4.99'}</span></div>
+      <div class="checkout-total-row grand"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+
+      <button class="checkout-pay-btn" onclick="processPayment()">🔒 Pay $${total.toFixed(2)}</button>
+      <button class="checkout-back-btn" onclick="closeCheckout();openCart();">← Back to Cart</button>
+    </div>`;
+}
+
+function fmtCard(input){
+  let v=input.value.replace(/\D/g,'').substring(0,16);
+  input.value=v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(input){
+  let v=input.value.replace(/\D/g,'');
+  if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);
+  input.value=v;
+}
+
+function processPayment(){
+  const fname=document.getElementById('co-fname').value.trim();
+  const lname=document.getElementById('co-lname').value.trim();
+  const email=document.getElementById('co-email').value.trim();
+  const card=document.getElementById('co-card').value.trim();
+  const expiry=document.getElementById('co-expiry').value.trim();
+  const cvv=document.getElementById('co-cvv').value.trim();
+  const cardname=document.getElementById('co-cardname').value.trim();
+  if(!fname||!lname||!email||!card||!expiry||!cvv||!cardname){showToast('Please fill in all required fields.','error');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Enter a valid email address.','error');return;}
+  if(card.replace(/\s/g,'').length<13){showToast('Enter a valid card number.','error');return;}
+  if(!/^\d{2}\/\d{2}$/.test(expiry)){showToast('Enter expiry as MM/YY.','error');return;}
+  if(cvv.length<3){showToast('Enter a valid CVV.','error');return;}
+
+  // Increment coupon use count
+  if(appliedCoupon){const c=coupons.find(x=>x.code===appliedCoupon.code);if(c)c.uses++;}
+
+  const orderId='JNS-'+Date.now().toString().slice(-6).toUpperCase();
+  const {total}=calcTotals();
+  document.getElementById('checkoutBox').innerHTML=`
+    <div class="checkout-success">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">Order Placed!</div>
+      <div class="success-sub">
+        Thanks, ${fname}! Your order has been received.<br>
+        A confirmation will be sent to <strong style="color:var(--text);">${email}</strong>.
+      </div>
+      <div class="success-order-id">Order #${orderId} · $${total.toFixed(2)}</div>
+      <button class="success-done-btn" onclick="closeCheckout();clearCart();">Done →</button>
+    </div>`;
+
+  appliedCoupon=null;
+  document.getElementById('couponInputWrap').style.display='flex';
+  document.getElementById('couponAppliedDisplay').style.display='none';
+}
+
+function openModal(i){
+  const p=products[i];
+  document.getElementById('m-emoji').textContent=p.emoji||'📦';
+  document.getElementById('m-cat').textContent=p.category;
+  document.getElementById('m-name').textContent=p.name;
+  document.getElementById('m-price').textContent='$'+parseFloat(p.price).toFixed(2);
+  document.getElementById('m-desc').textContent=p.desc;
+  document.getElementById('m-buy-btn').onclick=()=>{addToCart(i);document.getElementById('modal').classList.remove('open');};
+  document.getElementById('modal').classList.add('open');
+}
+
+function toggleAdmin(){
+  if(isAdmin)document.getElementById('adminPanel').classList.toggle('open');
+  else{document.getElementById('loginOverlay').classList.add('open');setTimeout(()=>document.getElementById('loginUser').focus(),100);}
+}
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  const au=users.find(us=>us.username===u&&(us.role==='admin'||us.role==='owner')&&!us.banned);
+  if(au&&p===ADMIN_PASS){
+    isAdmin=true;
+    document.getElementById('loginOverlay').classList.remove('open');
+    document.getElementById('loginPass').value='';document.getElementById('loginUser').value='';
+    document.getElementById('loginErr').style.display='none';
+    document.getElementById('adminPanel').classList.add('open');
+    document.getElementById('adminToggleBtn').classList.add('active');
+    document.getElementById('adminToggleBtn').textContent='⚙ Admin ●';
+    document.getElementById('products').classList.add('admin-mode');
+    renderUsers();renderGiveaways();renderCoupons();
+    showToast('Welcome back, '+au.display+'!','success');render();
+  }else{
+    document.getElementById('loginErr').style.display='block';
+    document.getElementById('loginPass').value='';
+  }
+}
+function cancelLogin(){
+  document.getElementById('loginOverlay').classList.remove('open');
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
+}
+function logout(){
+  isAdmin=false;
+  document.getElementById('adminPanel').classList.remove('open');
+  document.getElementById('adminToggleBtn').classList.remove('active');
+  document.getElementById('adminToggleBtn').textContent='⚙ Admin';
+  document.getElementById('products').classList.remove('admin-mode');
+  showToast('Logged out.','info');render();
+}
+
+function confirmAction(icon,title,msg,onYes){
+  document.getElementById('confirmIcon').textContent=icon;
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmMsg').textContent=msg;
+  document.getElementById('confirmYesBtn').onclick=()=>{document.getElementById('confirmOverlay').classList.remove('open');onYes();};
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+render();
+</script>
+</body>
+</html>
