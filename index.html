@@ -7,20 +7,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Space+Mono:wght@400;700&family=Oswald:wght@300;600&family=Permanent+Marker&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--bg:#0a0a0a;--bg2:#111;--bg3:#161616;--card:#161616;--border:rgba(255,255,255,0.08);--accent:#e8c97e;--accent2:#c084fc;--text:#f0ece3;--muted:#888;--red:#ff4545;--green:#4ade80;}
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#161616;--card:#161616;--border:rgba(255,255,255,0.08);--accent:#e8c97e;--accent2:#c084fc;--text:#f0ece3;--muted:#888;--red:#ff4545;--green:#4ade80;--blue:#60a5fa;}
 body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden;}
+
+/* ── SHOP CLOSED OVERLAY ── */
+#shopClosedOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9000;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:2rem;}
+#shopClosedOverlay.show{display:flex;}
+.closed-icon{font-size:5rem;margin-bottom:1.2rem;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.closed-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,8vw,5rem);letter-spacing:0.1em;color:var(--red);margin-bottom:0.5rem;}
+.closed-sub{font-size:0.85rem;color:var(--muted);letter-spacing:0.1em;line-height:1.8;max-width:400px;}
+.closed-admin-link{margin-top:2rem;font-size:0.65rem;color:rgba(255,255,255,0.15);cursor:pointer;letter-spacing:0.15em;text-transform:uppercase;}
+.closed-admin-link:hover{color:var(--muted);}
+
+/* ── NAV ── */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;border-bottom:1px solid var(--border);background:rgba(10,10,10,0.95);position:sticky;top:0;z-index:200;backdrop-filter:blur(12px);}
 .nav-links{display:flex;gap:2rem;list-style:none;}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;}
 .nav-links a:hover{color:var(--text);}
-.nav-right{display:flex;gap:0.8rem;align-items:center;}
+.nav-right{display:flex;gap:0.8rem;align-items:center;flex-wrap:wrap;}
 .nav-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.5rem 1rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .nav-btn:hover{border-color:var(--accent2);color:var(--accent2);}
 .nav-btn.active{border-color:var(--accent2);color:var(--accent2);background:rgba(192,132,252,0.08);}
+.nav-btn.owner-btn{border-color:rgba(232,201,126,0.4);color:var(--accent);}
+.nav-btn.owner-btn:hover,.nav-btn.owner-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(232,201,126,0.08);}
 .nav-cart-btn{background:var(--accent);border:none;color:#0a0a0a;padding:0.5rem 1.2rem;font-family:'Space Mono',monospace;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;display:flex;align-items:center;gap:0.5rem;}
 .nav-cart-btn:hover{opacity:0.85;}
 .cart-count-badge{background:#0a0a0a;color:var(--accent);border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;min-width:18px;}
+
+/* ── ANNOUNCE ── */
 .announce{background:var(--accent);color:#0a0a0a;text-align:center;padding:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;}
+
+/* ── GLOBAL ANNOUNCEMENT (owner broadcast) ── */
+#globalAnnouncement{display:none;background:linear-gradient(135deg,rgba(192,132,252,0.2),rgba(232,201,126,0.1));border-bottom:2px solid var(--accent2);padding:0.9rem 2.5rem;text-align:center;position:relative;}
+#globalAnnouncement.show{display:block;}
+.ga-text{font-size:0.82rem;color:var(--text);letter-spacing:0.08em;line-height:1.6;}
+.ga-close{position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;}
+.ga-close:hover{color:var(--text);}
+
+/* ── HERO ── */
 .hero{text-align:center;padding:5rem 2rem 4rem;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,201,126,0.07) 0%,transparent 70%);pointer-events:none;}
 .logo-stack{display:inline-flex;flex-direction:column;align-items:center;gap:0.15rem;margin-bottom:1.5rem;}
@@ -33,11 +58,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .hero-badges{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
 .hbadge{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.4rem 1rem;border:1px solid var(--border);color:var(--muted);}
 .hbadge.hot{border-color:var(--accent);color:var(--accent);}
+
+/* ── MARQUEE ── */
 .marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:0.7rem 0;margin:3rem 0 0;white-space:nowrap;}
 .marquee-inner{display:inline-flex;gap:3rem;animation:marquee 18s linear infinite;}
 .marquee-item{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--muted);}
 .marquee-item span{color:var(--accent);margin-right:3rem;}
 @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── SECTION ── */
 .section-header{display:flex;align-items:baseline;gap:1rem;padding:3rem 2.5rem 1.5rem;}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.08em;color:var(--text);}
 .section-line{flex:1;height:1px;background:var(--border);}
@@ -46,6 +75,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .empty-icon{font-size:3rem;opacity:0.2;margin-bottom:1rem;}
 .empty-text{font-family:'Oswald',sans-serif;font-size:1.2rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;}
 .empty-sub{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;opacity:0.6;}
+
+/* ── PRODUCTS ── */
 .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;background:var(--border);margin:0 2.5rem;}
 .card{background:var(--card);display:flex;flex-direction:column;transition:background 0.2s;position:relative;overflow:hidden;}
 .card:hover{background:#1c1c1c;}
@@ -69,18 +100,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .card-btn:hover{background:var(--accent);border-color:var(--accent);color:#0a0a0a;}
 .card-btn-cart{background:var(--accent);border:1px solid var(--accent);color:#0a0a0a;padding:0.45rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .card-btn-cart:hover{opacity:0.8;}
+
+/* ── ADMIN PANEL ── */
 .admin-panel{display:none;background:var(--bg2);border:1px solid rgba(192,132,252,0.25);margin:0 2.5rem 2rem;overflow:hidden;}
 .admin-panel.open{display:block;}
-.admin-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg3);}
-.admin-tab{flex:1;padding:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;text-align:center;}
+.admin-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg3);overflow-x:auto;}
+.admin-tab{flex:1;min-width:max-content;padding:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;text-align:center;}
 .admin-tab:hover{color:var(--text);}
 .admin-tab.active{color:var(--accent2);border-bottom-color:var(--accent2);}
 .admin-tab-content{display:none;padding:2rem;}
 .admin-tab-content.active{display:block;}
-.ap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.8rem;}
+.ap-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.8rem;flex-wrap:wrap;gap:1rem;}
 .ap-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.08em;color:var(--accent2);}
 .ap-badge{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.7rem;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.3);color:var(--accent2);}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;margin-bottom:1.8rem;}
 .stat-box{background:var(--bg3);border:1px solid var(--border);padding:1rem 1.2rem;}
 .stat-label{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
 .stat-value{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.05em;color:var(--accent);}
@@ -100,6 +133,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .ap-btn.gold{background:var(--accent);color:#0a0a0a;}
 .ap-btn.red{background:var(--red);color:#fff;}
 .ap-btn.green{background:var(--green);color:#0a0a0a;}
+.ap-btn.blue{background:var(--blue);color:#0a0a0a;}
 .ap-btn-sm{border:none;padding:0.4rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .ap-btn-sm.red{background:rgba(255,69,69,0.12);border:1px solid rgba(255,69,69,0.3);color:var(--red);}
 .ap-btn-sm.red:hover{background:var(--red);color:#fff;}
@@ -109,7 +143,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .ap-btn-sm.purple:hover{background:var(--accent2);color:#fff;}
 .ap-btn-sm.gold{background:rgba(232,201,126,0.1);border:1px solid rgba(232,201,126,0.3);color:var(--accent);}
 .ap-btn-sm.gold:hover{background:var(--accent);color:#0a0a0a;}
-.ap-btn-wrap{grid-column:1/-1;display:flex;align-items:center;gap:1rem;margin-top:0.5rem;}
+.ap-btn-sm.blue{background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.3);color:var(--blue);}
+.ap-btn-sm.blue:hover{background:var(--blue);color:#0a0a0a;}
+.ap-btn-wrap{grid-column:1/-1;display:flex;align-items:center;gap:1rem;margin-top:0.5rem;flex-wrap:wrap;}
 .user-table{width:100%;border-collapse:collapse;font-size:0.78rem;}
 .user-table th{text-align:left;padding:0.6rem 1rem;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);font-weight:400;}
 .user-table td{padding:0.8rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle;}
@@ -131,9 +167,59 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .giveaway-status.ended{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);}
 .giveaway-actions{display:flex;gap:0.5rem;align-items:center;}
 .announce-preview{background:var(--accent);color:#0a0a0a;text-align:center;padding:0.8rem;font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;margin-bottom:1rem;}
-.coupon-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1rem;background:var(--bg3);border:1px solid var(--border);margin-bottom:0.5rem;}
+.coupon-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1rem;background:var(--bg3);border:1px solid var(--border);margin-bottom:0.5rem;flex-wrap:wrap;}
 .coupon-code-lbl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.15em;color:var(--accent);flex:1;}
 .coupon-meta{font-size:0.68rem;color:var(--muted);}
+
+/* ── OWNER PANEL ── */
+.owner-panel{display:none;background:var(--bg2);border:2px solid rgba(232,201,126,0.35);margin:0 2.5rem 2rem;overflow:hidden;}
+.owner-panel.open{display:block;}
+.owner-panel-header{background:linear-gradient(135deg,rgba(232,201,126,0.15),rgba(232,201,126,0.05));padding:1.5rem 2rem;border-bottom:1px solid rgba(232,201,126,0.2);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:space-between;}
+.owner-panel-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.1em;color:var(--accent);}
+.owner-badge{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;background:rgba(232,201,126,0.15);border:1px solid rgba(232,201,126,0.4);color:var(--accent);}
+.owner-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg3);overflow-x:auto;}
+.owner-tab{flex:1;min-width:max-content;padding:1rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;background:none;border:none;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;text-align:center;}
+.owner-tab:hover{color:var(--text);}
+.owner-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.owner-tab-content{display:none;padding:2rem;}
+.owner-tab-content.active{display:block;}
+
+/* ── ORDER NOTIFICATIONS ── */
+.order-notif{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--green);padding:1rem 1.2rem;margin-bottom:0.8rem;display:flex;align-items:flex-start;gap:1rem;flex-wrap:wrap;}
+.order-notif.unread{border-left-color:var(--accent2);background:rgba(192,132,252,0.04);}
+.order-notif-icon{font-size:1.5rem;flex-shrink:0;}
+.order-notif-body{flex:1;}
+.order-notif-title{font-family:'Oswald',sans-serif;font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);margin-bottom:0.25rem;}
+.order-notif-meta{font-size:0.68rem;color:var(--muted);}
+.order-notif-actions{display:flex;gap:0.5rem;align-items:center;margin-top:0.5rem;}
+.unread-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);flex-shrink:0;margin-top:0.3rem;}
+
+/* ── LIVE CHAT ── */
+#chatWidget{position:fixed;bottom:2rem;right:2rem;z-index:700;}
+.chat-fab{background:var(--accent2);border:none;color:#fff;width:56px;height:56px;border-radius:50%;font-size:1.4rem;cursor:pointer;box-shadow:0 4px 20px rgba(192,132,252,0.4);display:flex;align-items:center;justify-content:center;transition:transform 0.2s,box-shadow 0.2s;position:relative;}
+.chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(192,132,252,0.55);}
+.chat-unread-badge{position:absolute;top:-3px;right:-3px;background:var(--red);color:#fff;border-radius:50%;width:18px;height:18px;font-size:0.58rem;font-weight:700;display:none;align-items:center;justify-content:center;}
+.chat-unread-badge.show{display:flex;}
+.chat-window{position:absolute;bottom:70px;right:0;width:340px;background:var(--bg2);border:1px solid rgba(192,132,252,0.3);display:none;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,0.6);}
+.chat-window.open{display:flex;}
+.chat-win-header{background:linear-gradient(135deg,rgba(192,132,252,0.2),rgba(192,132,252,0.05));padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.chat-win-title{font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text);}
+.chat-win-status{font-size:0.62rem;color:var(--green);letter-spacing:0.1em;}
+.chat-win-close{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;}
+.chat-messages{height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.6rem;}
+.chat-msg{max-width:85%;padding:0.6rem 0.9rem;font-size:0.75rem;line-height:1.5;border-radius:2px;}
+.chat-msg.them{background:var(--bg3);color:var(--text);align-self:flex-start;border-left:2px solid var(--accent2);}
+.chat-msg.us{background:rgba(232,201,126,0.12);color:var(--text);align-self:flex-end;border-right:2px solid var(--accent);}
+.chat-msg .msg-sender{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.2rem;opacity:0.6;}
+.chat-input-row{display:flex;border-top:1px solid var(--border);}
+.chat-input{flex:1;background:transparent;border:none;color:var(--text);padding:0.8rem 1rem;font-family:'Space Mono',monospace;font-size:0.75rem;outline:none;}
+.chat-send-btn{background:var(--accent2);border:none;color:#fff;padding:0 1rem;cursor:pointer;font-size:0.9rem;transition:opacity 0.2s;}
+.chat-send-btn:hover{opacity:0.85;}
+.chat-paypal-section{padding:0.8rem 1rem;border-top:1px solid var(--border);background:var(--bg3);}
+.chat-paypal-label{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
+.chat-paypal-info{font-size:0.72rem;color:var(--accent);font-weight:700;}
+
+/* ── LOGIN ── */
 .login-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;align-items:center;justify-content:center;}
 .login-overlay.open{display:flex;}
 .login-box{background:var(--bg2);border:1px solid rgba(192,132,252,0.3);padding:2.5rem;width:100%;max-width:380px;animation:slideUp 0.2s ease;}
@@ -148,6 +234,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .login-cancel{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.7rem;font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
 .login-cancel:hover{color:var(--text);}
 .login-err{font-size:0.7rem;color:var(--red);margin-top:0.5rem;display:none;}
+.login-role-hint{font-size:0.62rem;color:var(--muted);margin-top:0.3rem;text-align:center;}
+
+/* ── OWNER LOGIN ── */
+.owner-login-box{border-color:rgba(232,201,126,0.4);}
+.owner-login-box .login-title{color:var(--accent);}
+.owner-login-box .login-btn{background:var(--accent);color:#0a0a0a;}
+
+/* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;padding:1rem;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:520px;padding:2rem;position:relative;animation:slideUp 0.2s ease;}
@@ -161,6 +255,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .modal-desc{font-size:0.8rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;}
 .modal-buy{width:100%;background:var(--accent);border:none;color:#0a0a0a;padding:0.9rem;font-family:'Space Mono',monospace;font-size:0.8rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
 .modal-buy:hover{opacity:0.85;}
+
+/* ── CART ── */
 .cart-drawer{position:fixed;top:0;right:0;width:420px;max-width:100vw;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:800;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
 .cart-drawer.open{transform:translateX(0);}
 .cart-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:799;opacity:0;pointer-events:none;transition:opacity 0.3s;}
@@ -207,6 +303,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .cart-checkout-btn:hover{opacity:0.85;}
 .cart-clear-btn{width:100%;background:transparent;border:1px solid rgba(255,69,69,0.25);color:rgba(255,69,69,0.7);padding:0.6rem;font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .cart-clear-btn:hover{border-color:var(--red);color:var(--red);}
+
+/* ── CHECKOUT ── */
 .checkout-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:900;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2rem 1rem;}
 .checkout-overlay.open{display:flex;}
 .checkout-box{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:640px;animation:slideUp 0.25s ease;margin:auto;}
@@ -234,10 +332,25 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .checkout-total-row.discount-row{color:var(--green);}
 .checkout-total-row.grand{color:var(--text);font-size:0.85rem;padding-top:0.8rem;border-top:1px solid var(--border);margin-top:0.4rem;}
 .checkout-total-row.grand span:last-child{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--accent);}
+
+/* Payment method tabs */
+.pay-method-tabs{display:flex;gap:0.5rem;margin-bottom:1.2rem;}
+.pay-method-tab{flex:1;padding:0.8rem;background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-align:center;}
+.pay-method-tab:hover{border-color:var(--accent2);color:var(--text);}
+.pay-method-tab.active{border-color:var(--accent2);color:var(--accent2);background:rgba(192,132,252,0.08);}
+.pay-method-content{display:none;}
+.pay-method-content.active{display:block;}
+.paypal-info-box{background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.25);padding:1.2rem;margin-bottom:1rem;}
+.paypal-info-title{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:0.6rem;}
+.paypal-username-display{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.1em;color:var(--accent);}
+.paypal-instruction{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;line-height:1.6;}
+
 .checkout-pay-btn{width:100%;background:var(--accent);border:none;color:#0a0a0a;padding:1.1rem;font-family:'Space Mono',monospace;font-size:0.85rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;margin-top:1rem;}
 .checkout-pay-btn:hover{opacity:0.85;}
 .checkout-back-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.7rem;font-family:'Space Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:0.6rem;}
 .checkout-back-btn:hover{color:var(--text);border-color:var(--text);}
+
+/* ── SUCCESS ── */
 .checkout-success{text-align:center;padding:3.5rem 2rem;}
 .success-icon{font-size:4rem;margin-bottom:1.2rem;display:block;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
 @keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -246,6 +359,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .success-order-id{font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--accent);background:rgba(232,201,126,0.08);border:1px solid rgba(232,201,126,0.2);padding:0.7rem 1.4rem;display:inline-block;margin-bottom:2rem;letter-spacing:0.1em;}
 .success-done-btn{background:var(--accent);border:none;color:#0a0a0a;padding:0.9rem 2.5rem;font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
 .success-done-btn:hover{opacity:0.85;}
+.success-chat-btn{background:var(--accent2);border:none;color:#fff;padding:0.9rem 2.5rem;font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;margin-top:0.6rem;display:block;width:100%;max-width:300px;margin-left:auto;margin-right:auto;}
+.success-chat-btn:hover{opacity:0.85;}
+
+/* ── CONFIRM ── */
 .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;align-items:center;justify-content:center;padding:1rem;}
 .confirm-overlay.open{display:flex;}
 .confirm-box{background:var(--bg2);border:1px solid var(--border);width:100%;max-width:380px;padding:2rem;animation:slideUp 0.2s ease;text-align:center;}
@@ -257,18 +374,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .confirm-btns button:hover{opacity:0.85;}
 .confirm-yes{background:var(--red);color:#fff;}
 .confirm-no{background:var(--bg3);border:1px solid var(--border)!important;color:var(--muted);}
-footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:var(--accent);}
-.footer-text{font-size:0.68rem;color:var(--muted);letter-spacing:0.08em;}
-.footer-links{display:flex;gap:1.5rem;}
-.footer-links a{font-size:0.68rem;color:var(--muted);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;}
-.footer-links a:hover{color:var(--text);}
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:0.8rem 1.5rem;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
-.toast.success{background:var(--green);color:#0a0a0a;}
-.toast.info{background:var(--accent);color:#0a0a0a;}
-.toast.error{background:var(--red);color:#fff;}
-.toast.show{opacity:1;}
-.giveaway-banner{background:linear-gradient(135deg,rgba(192,132,252,0.15),rgba(232,201,126,0.08));border:1px solid rgba(192,132,252,0.3);margin:0 2.5rem;padding:1.2rem 1.8rem;display:flex;align-items:center;gap:1.2rem;margin-bottom:0.5rem;}
+
+/* ── GIVEAWAY ── */
+#giveawayBanner{display:none;margin-top:1.5rem;}
+.giveaway-banner{background:linear-gradient(135deg,rgba(192,132,252,0.15),rgba(232,201,126,0.08));border:1px solid rgba(192,132,252,0.3);margin:0 2.5rem;padding:1.2rem 1.8rem;display:flex;align-items:center;gap:1.2rem;}
 .giveaway-banner-icon{font-size:2rem;}
 .giveaway-banner-text{flex:1;}
 .giveaway-banner-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.08em;color:var(--accent2);}
@@ -276,10 +385,55 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
 .giveaway-enter-btn{background:var(--accent2);border:none;color:#fff;padding:0.6rem 1.4rem;font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;white-space:nowrap;}
 .giveaway-enter-btn:hover{opacity:0.85;}
 .giveaway-enter-btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+/* ── FOOTER ── */
+footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.08em;color:var(--accent);}
+.footer-text{font-size:0.68rem;color:var(--muted);letter-spacing:0.08em;}
+.footer-links{display:flex;gap:1.5rem;}
+.footer-links a{font-size:0.68rem;color:var(--muted);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;}
+.footer-links a:hover{color:var(--text);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:0.8rem 1.5rem;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;opacity:0;transition:opacity 0.3s;z-index:9999;pointer-events:none;white-space:nowrap;}
+.toast.success{background:var(--green);color:#0a0a0a;}
+.toast.info{background:var(--accent);color:#0a0a0a;}
+.toast.error{background:var(--red);color:#fff;}
+.toast.show{opacity:1;}
+
+/* ── OWNER ANNOUNCEMENT ITEMS ── */
+.announcement-item{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--accent);padding:1rem 1.2rem;margin-bottom:0.8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;}
+.announcement-item-body{flex:1;}
+.announcement-item-text{font-size:0.82rem;color:var(--text);line-height:1.6;margin-bottom:0.3rem;}
+.announcement-item-meta{font-size:0.62rem;color:var(--muted);}
+
+@media(max-width:600px){
+  nav{padding:1rem 1rem;}
+  .products{margin:0 1rem;}
+  .section-header{padding:2rem 1rem 1rem;}
+  .admin-panel,.owner-panel{margin:0 1rem 2rem;}
+  .giveaway-banner{margin:0 1rem;}
+  .empty-state{margin:0 1rem;}
+}
 </style>
 </head>
 <body>
 
+<!-- ── SHOP CLOSED OVERLAY ── -->
+<div id="shopClosedOverlay">
+  <div class="closed-icon">🔒</div>
+  <div class="closed-title">Store Closed</div>
+  <div class="closed-sub">We're currently closed.<br>All purchases are paused right now.<br>Check back soon!</div>
+  <span class="closed-admin-link" onclick="bypassClosed()">Admin Access →</span>
+</div>
+
+<!-- ── GLOBAL ANNOUNCEMENT ── -->
+<div id="globalAnnouncement">
+  <div class="ga-text" id="globalAnnouncementText"></div>
+  <button class="ga-close" onclick="dismissGlobalAnnouncement()">×</button>
+</div>
+
+<!-- ── ANNOUNCEMENT BANNER ── -->
 <div class="announce" id="announceBanner">⚡ Free delivery on all orders — No minimums ⚡</div>
 
 <nav>
@@ -290,6 +444,7 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
     <li><a href="#">About</a></li>
   </ul>
   <div class="nav-right">
+    <button class="nav-btn owner-btn" id="ownerToggleBtn" onclick="toggleOwner()">👑 Owner</button>
     <button class="nav-btn" id="adminToggleBtn" onclick="toggleAdmin()">⚙ Admin</button>
     <button class="nav-cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count-badge" id="cartCountBadge">0</span></button>
   </div>
@@ -328,7 +483,7 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
-<div id="giveawayBanner" style="display:none;margin-top:1.5rem;">
+<div id="giveawayBanner">
   <div class="giveaway-banner">
     <div class="giveaway-banner-icon">🎁</div>
     <div class="giveaway-banner-text">
@@ -339,6 +494,92 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
+<!-- ── OWNER PANEL ── -->
+<div class="owner-panel" id="ownerPanel">
+  <div class="owner-panel-header">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="owner-panel-title">👑 Owner Panel</div>
+      <span class="owner-badge">OWNER ACCESS</span>
+    </div>
+    <button onclick="ownerLogout()" style="background:transparent;border:1px solid rgba(255,69,69,0.3);color:var(--red);padding:0.4rem 0.9rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Log Out</button>
+  </div>
+  <div class="owner-tabs">
+    <button class="owner-tab active" onclick="switchOwnerTab('announcements',this)">📢 Announcements</button>
+    <button class="owner-tab" onclick="switchOwnerTab('orders',this)">📦 Orders</button>
+    <button class="owner-tab" onclick="switchOwnerTab('paypal',this)">💸 PayPal</button>
+    <button class="owner-tab" onclick="switchOwnerTab('ownerSettings',this)">⚙ Settings</button>
+  </div>
+
+  <!-- ANNOUNCEMENTS TAB -->
+  <div class="owner-tab-content active" id="otab-announcements">
+    <div class="ap-header"><div class="ap-title" style="color:var(--accent);">Global Announcements</div></div>
+    <div class="ap-section-title">Send a Global Announcement</div>
+    <div class="ap-form" style="margin-bottom:1.5rem;">
+      <div class="fgroup ap-form-full"><label class="flabel">Announcement Message *</label>
+        <textarea class="ftextarea" id="ow-announce-msg" placeholder="Type a message to show to all visitors..."></textarea>
+      </div>
+      <div class="ap-btn-wrap">
+        <button class="ap-btn gold" onclick="sendGlobalAnnouncement()">📢 Broadcast Now</button>
+        <button class="ap-btn red" onclick="clearGlobalAnnouncement()">✕ Clear Announcement</button>
+      </div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">Announcement History</div>
+    <div id="announcementHistory"><div style="color:var(--muted);font-size:0.78rem;">No announcements sent yet.</div></div>
+  </div>
+
+  <!-- ORDERS TAB -->
+  <div class="owner-tab-content" id="otab-orders">
+    <div class="ap-header"><div class="ap-title" style="color:var(--accent);">Order Notifications</div></div>
+    <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <button class="ap-btn-sm gold" onclick="markAllOrdersRead()">Mark All Read</button>
+      <button class="ap-btn-sm red" onclick="clearOrders()">Clear All</button>
+    </div>
+    <div id="ordersList"><div style="color:var(--muted);font-size:0.78rem;">No orders yet. When customers buy, you'll see it here.</div></div>
+  </div>
+
+  <!-- PAYPAL TAB -->
+  <div class="owner-tab-content" id="otab-paypal">
+    <div class="ap-header"><div class="ap-title" style="color:var(--accent);">PayPal Settings</div></div>
+    <div class="ap-section-title">Your PayPal Username / Link</div>
+    <div class="ap-form" style="margin-bottom:1.5rem;">
+      <div class="fgroup ap-form-full"><label class="flabel">PayPal.me Username or Full Link</label>
+        <input class="finput" id="ow-paypal" placeholder="e.g. johndoe or paypal.me/johndoe"/>
+      </div>
+      <div class="fgroup ap-form-full"><label class="flabel">PayPal Instructions (shown to buyers)</label>
+        <textarea class="ftextarea" id="ow-paypal-note" placeholder="e.g. Send payment as Friends & Family. Include your order ID in the note."></textarea>
+      </div>
+      <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="savePaypalSettings()">💾 Save PayPal Info</button></div>
+    </div>
+    <div id="paypalPreview" style="display:none;">
+      <div class="ap-section-title">Preview (what buyers see)</div>
+      <div class="paypal-info-box">
+        <div class="paypal-info-title">💸 Pay via PayPal</div>
+        <div class="paypal-username-display" id="paypalPreviewUsername"></div>
+        <div class="paypal-instruction" id="paypalPreviewNote"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OWNER SETTINGS TAB -->
+  <div class="owner-tab-content" id="otab-ownerSettings">
+    <div class="ap-header"><div class="ap-title" style="color:var(--accent);">Owner Settings</div></div>
+    <div class="ap-section-title">Change Owner Password</div>
+    <div class="ap-form" style="margin-bottom:1.5rem;">
+      <div class="fgroup"><label class="flabel">New Password *</label><input class="finput" id="ow-pass" type="password"/></div>
+      <div class="fgroup"><label class="flabel">Confirm Password *</label><input class="finput" id="ow-pass2" type="password"/></div>
+      <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="changeOwnerPassword()">Update Password</button></div>
+    </div>
+    <div class="ap-divider"></div>
+    <div class="ap-section-title">Live Chat Settings</div>
+    <div class="ap-form">
+      <div class="fgroup"><label class="flabel">Admin Chat Name</label><input class="finput" id="ow-chat-name" placeholder="John (Support)"/></div>
+      <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="saveChatSettings()">Save</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN PANEL ── -->
 <div class="admin-panel" id="adminPanel">
   <div class="admin-tabs">
     <button class="admin-tab active" onclick="switchTab('listings',this)">📦 Listings</button>
@@ -424,7 +665,7 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
     <div style="margin-bottom:1.5rem;">
       <div class="announce-preview" id="announcePreview">⚡ Free delivery on all orders — No minimums ⚡</div>
       <div class="ap-form">
-        <div class="fgroup ap-form-full"><label class="flabel">Banner Text</label><input class="finput" id="set-announce" value="⚡ Free delivery on all orders — No minimums ⚡" oninput="previewAnnounce(this.value)"/></div>
+        <div class="fgroup ap-form-full"><label class="flabel">Banner Text</label><input class="finput" id="set-announce" oninput="previewAnnounce(this.value)"/></div>
         <div class="ap-btn-wrap"><button class="ap-btn gold" onclick="saveAnnounce()">Save Banner</button></div>
       </div>
     </div>
@@ -463,6 +704,33 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   <div class="footer-text">© 2025 John's Shop. All rights reserved.</div>
 </footer>
 
+<!-- ── LIVE CHAT WIDGET ── -->
+<div id="chatWidget">
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-win-header">
+      <div>
+        <div class="chat-win-title" id="chatAgentName">Support Chat</div>
+        <div class="chat-win-status">● Online</div>
+      </div>
+      <button class="chat-win-close" onclick="toggleChat()">×</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-paypal-section" id="chatPaypalSection" style="display:none;">
+      <div class="chat-paypal-label">💸 PayPal Payment</div>
+      <div class="chat-paypal-info" id="chatPaypalInfo"></div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChatMessage()"/>
+      <button class="chat-send-btn" onclick="sendChatMessage()">↑</button>
+    </div>
+  </div>
+  <button class="chat-fab" onclick="toggleChat()" title="Live Chat">
+    💬
+    <span class="chat-unread-badge" id="chatUnreadBadge">1</span>
+  </button>
+</div>
+
+<!-- ── CART ── -->
 <div class="cart-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
@@ -493,10 +761,12 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
+<!-- ── CHECKOUT ── -->
 <div class="checkout-overlay" id="checkoutOverlay">
   <div class="checkout-box" id="checkoutBox"></div>
 </div>
 
+<!-- ── LOGIN OVERLAYS ── -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
     <div class="login-title">Admin Login</div>
@@ -509,6 +779,18 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
+<div class="login-overlay" id="ownerLoginOverlay">
+  <div class="login-box owner-login-box">
+    <div class="login-title">Owner Login</div>
+    <div class="login-sub">Owner-level access only.</div>
+    <div class="login-group"><label class="login-label">Password</label><input class="login-input" id="ownerLoginPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doOwnerLogin()"/></div>
+    <div class="login-err" id="ownerLoginErr">Incorrect owner password.</div>
+    <button class="login-btn" style="background:var(--accent);color:#0a0a0a;" onclick="doOwnerLogin()">Login as Owner →</button>
+    <button class="login-cancel" onclick="cancelOwnerLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── PRODUCT MODAL ── -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">×</button>
@@ -521,6 +803,7 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
   </div>
 </div>
 
+<!-- ── CONFIRM ── -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <div class="confirm-icon" id="confirmIcon">⚠️</div>
@@ -540,56 +823,144 @@ footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.5rem;display
 function save(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
 function load(key,def){try{const v=localStorage.getItem(key);return v!=null?JSON.parse(v):def;}catch(e){return def;}}
 
-// ── State (loaded from localStorage)
-let ADMIN_PASS=load('adminPass','johns2025');
-let isAdmin=load('isAdmin',false);
-let products=load('products',[]);
-let cart=load('cart',[]);
-let users=load('users',[
+// ── State
+let ADMIN_PASS = load('adminPass','johns2025');
+let OWNER_PASS = load('ownerPass','owner2025');
+let isAdmin    = load('isAdmin', false);
+let isOwner    = load('isOwner', false);
+let products   = load('products', []);
+let cart       = load('cart', []);
+let users      = load('users', [
   {id:1,username:'owner',display:'John (Owner)',role:'owner',joined:'2025-01-01',banned:false},
   {id:2,username:'admin',display:'Admin',role:'admin',joined:'2025-01-01',banned:false},
 ]);
-let nextUserId=load('nextUserId',3);
-let giveaways=load('giveaways',[]);
-let coupons=load('coupons',[]);
-let shopOpen=load('shopOpen',true);
-let appliedCoupon=null;
+let nextUserId     = load('nextUserId', 3);
+let giveaways      = load('giveaways', []);
+let coupons        = load('coupons', []);
+let shopOpen       = load('shopOpen', true);
+let announcements  = load('announcements', []);
+let orders         = load('orders', []);
+let paypalUsername = load('paypalUsername', '');
+let paypalNote     = load('paypalNote', '');
+let chatAgentName  = load('chatAgentName', 'John (Support)');
+let announceBannerText = load('announceBannerText', '⚡ Free delivery on all orders — No minimums ⚡');
+let globalAnnouncementText = load('globalAnnouncementText', '');
+let globalAnnouncementDismissed = sessionStorage.getItem('gaDismissed') === '1';
+let appliedCoupon  = null;
+let chatMessages   = [];
+let chatOpen       = false;
 
 function persist(){
-  save('adminPass',ADMIN_PASS);
-  save('isAdmin',isAdmin);
-  save('products',products);
-  save('cart',cart);
-  save('users',users);
-  save('nextUserId',nextUserId);
-  save('giveaways',giveaways);
-  save('coupons',coupons);
-  save('shopOpen',shopOpen);
+  save('adminPass', ADMIN_PASS);
+  save('ownerPass', OWNER_PASS);
+  save('isAdmin', isAdmin);
+  save('isOwner', isOwner);
+  save('products', products);
+  save('cart', cart);
+  save('users', users);
+  save('nextUserId', nextUserId);
+  save('giveaways', giveaways);
+  save('coupons', coupons);
+  save('shopOpen', shopOpen);
+  save('announcements', announcements);
+  save('orders', orders);
+  save('paypalUsername', paypalUsername);
+  save('paypalNote', paypalNote);
+  save('chatAgentName', chatAgentName);
+  save('announceBannerText', announceBannerText);
+  save('globalAnnouncementText', globalAnnouncementText);
 }
 
-// Restore admin UI state on load
-if(isAdmin){
-  document.getElementById('adminPanel').classList.add('open');
-  document.getElementById('adminToggleBtn').classList.add('active');
-  document.getElementById('adminToggleBtn').textContent='⚙ Admin ●';
+// ── Init UI from saved state
+function initUI(){
+  // Announcement banner
+  document.getElementById('announceBanner').textContent = announceBannerText;
+  document.getElementById('set-announce') && (document.getElementById('set-announce').value = announceBannerText);
+  document.getElementById('announcePreview') && (document.getElementById('announcePreview').textContent = announceBannerText);
+
+  // Chat agent name
+  document.getElementById('chatAgentName').textContent = chatAgentName;
+  document.getElementById('ow-chat-name') && (document.getElementById('ow-chat-name').value = chatAgentName);
+
+  // PayPal
+  if(document.getElementById('ow-paypal')) document.getElementById('ow-paypal').value = paypalUsername;
+  if(document.getElementById('ow-paypal-note')) document.getElementById('ow-paypal-note').value = paypalNote;
+  updatePaypalPreview();
+
+  // Shop status
+  updateShopClosedUI();
+
+  // Global announcement
+  if(globalAnnouncementText && !globalAnnouncementDismissed){
+    document.getElementById('globalAnnouncementText').textContent = globalAnnouncementText;
+    document.getElementById('globalAnnouncement').classList.add('show');
+  }
+
+  // Admin/owner panel restore
+  if(isOwner){
+    document.getElementById('ownerPanel').classList.add('open');
+    document.getElementById('ownerToggleBtn').classList.add('active');
+    document.getElementById('ownerToggleBtn').textContent = '👑 Owner ●';
+    renderAnnouncementHistory();
+    renderOrders();
+  }
+  if(isAdmin){
+    document.getElementById('adminPanel').classList.add('open');
+    document.getElementById('adminToggleBtn').classList.add('active');
+    document.getElementById('adminToggleBtn').textContent = '⚙ Admin ●';
+    renderUsers(); renderGiveaways(); renderCoupons();
+    document.getElementById('products').classList.add('admin-mode');
+  }
+
+  // Shop closed overlay — only show to non-admins/owners
+  if(!shopOpen && !isAdmin && !isOwner){
+    document.getElementById('shopClosedOverlay').classList.add('show');
+  }
+
+  // Chat greeting
+  addChatMsg('them', chatAgentName, 'Hey! 👋 Welcome to John\'s Shop. How can I help you today?');
 }
 
+function updateShopClosedUI(){
+  document.getElementById('shopStatusLabel').textContent = shopOpen ? 'OPEN' : 'CLOSED';
+  document.getElementById('shopStatusLabel').style.color = shopOpen ? 'var(--green)' : 'var(--red)';
+  if(!shopOpen && !isAdmin && !isOwner){
+    document.getElementById('shopClosedOverlay').classList.add('show');
+  } else {
+    document.getElementById('shopClosedOverlay').classList.remove('show');
+  }
+}
+
+function bypassClosed(){
+  document.getElementById('shopClosedOverlay').classList.remove('show');
+  document.getElementById('loginOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('loginUser').focus(),100);
+}
+
+// ── Tab switching
 function switchTab(name,el){
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.admin-tab-content').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
 }
+function switchOwnerTab(name,el){
+  document.querySelectorAll('.owner-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.owner-tab-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('otab-'+name).classList.add('active');
+}
 
+// ── Render products
 function render(){
-  const grid=document.getElementById('products');
-  const empty=document.getElementById('emptyState');
-  document.getElementById('countLabel').textContent=products.length+' item'+(products.length!==1?'s':'');
-  grid.innerHTML='';
-  if(products.length===0){empty.style.display='block';grid.style.display='none';updateStats();return;}
+  const grid = document.getElementById('products');
+  const empty = document.getElementById('emptyState');
+  document.getElementById('countLabel').textContent = products.length+' item'+(products.length!==1?'s':'');
+  grid.innerHTML = '';
+  if(!products.length){empty.style.display='block';grid.style.display='none';updateStats();return;}
   empty.style.display='none';grid.style.display='grid';
   products.forEach((p,i)=>{
-    const card=document.createElement('div');card.className='card';
+    const card = document.createElement('div');card.className='card';
     card.innerHTML=`
       <div class="card-img">${p.emoji||'📦'}
         ${p.badge?`<span class="card-badge ${p.badge}">${p.badge==='hot'?'🔥 Hot':p.badge==='new'?'✦ New':'% Sale'}</span>`:''}
@@ -609,28 +980,28 @@ function render(){
       </div>`;
     grid.appendChild(card);
   });
-  if(isAdmin)grid.classList.add('admin-mode');else grid.classList.remove('admin-mode');
+  if(isAdmin) grid.classList.add('admin-mode'); else grid.classList.remove('admin-mode');
   updateStats();
 }
 
 function updateStats(){
-  document.getElementById('stat-total').textContent=products.length;
-  const tv=products.reduce((s,p)=>s+parseFloat(p.price),0);
-  document.getElementById('stat-value').textContent='$'+tv.toFixed(2);
-  document.getElementById('stat-cats').textContent=new Set(products.map(p=>p.category)).size;
-  document.getElementById('stat-users').textContent=users.length;
+  document.getElementById('stat-total').textContent = products.length;
+  const tv = products.reduce((s,p)=>s+parseFloat(p.price),0);
+  document.getElementById('stat-value').textContent = '$'+tv.toFixed(2);
+  document.getElementById('stat-cats').textContent = new Set(products.map(p=>p.category)).size;
+  document.getElementById('stat-users').textContent = users.length;
 }
 
 function addListing(){
-  const name=document.getElementById('f-name').value.trim();
-  const cat=document.getElementById('f-cat').value.trim();
-  const price=document.getElementById('f-price').value.trim();
-  const desc=document.getElementById('f-desc').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  const cat  = document.getElementById('f-cat').value.trim();
+  const price= document.getElementById('f-price').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
   if(!name||!cat||!price||!desc){showToast('Fill in all required fields!','error');return;}
   if(isNaN(parseFloat(price))||parseFloat(price)<0){showToast('Enter a valid price.','error');return;}
-  const original=document.getElementById('f-original').value.trim();
-  const emoji=document.getElementById('f-emoji').value.trim()||'📦';
-  const badge=document.getElementById('f-badge').value;
+  const original = document.getElementById('f-original').value.trim();
+  const emoji    = document.getElementById('f-emoji').value.trim()||'📦';
+  const badge    = document.getElementById('f-badge').value;
   products.push({name,category:cat,price,original:original||null,emoji,badge:badge||null,desc});
   ['f-name','f-cat','f-price','f-original','f-emoji','f-desc'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-badge').value='';
@@ -640,16 +1011,17 @@ function addListing(){
 function deleteItem(i,e){
   e.stopPropagation();
   confirmAction('🗑️','Delete Listing','Remove "'+products[i].name+'" from the shop?',()=>{
-    cart=cart.filter(c=>c.productIdx!==i).map(c=>({...c,productIdx:c.productIdx>i?c.productIdx-1:c.productIdx}));
+    cart = cart.filter(c=>c.productIdx!==i).map(c=>({...c,productIdx:c.productIdx>i?c.productIdx-1:c.productIdx}));
     products.splice(i,1);persist();updateCartBadge();renderCart();showToast('Listing removed.','error');render();
   });
 }
 
+// ── Users
 function addUser(){
-  const username=document.getElementById('nu-name').value.trim();
-  const pass=document.getElementById('nu-pass').value.trim();
-  const role=document.getElementById('nu-role').value;
-  const display=document.getElementById('nu-display').value.trim()||username;
+  const username = document.getElementById('nu-name').value.trim();
+  const pass     = document.getElementById('nu-pass').value.trim();
+  const role     = document.getElementById('nu-role').value;
+  const display  = document.getElementById('nu-display').value.trim()||username;
   if(!username||!pass){showToast('Username and password required.','error');return;}
   if(users.find(u=>u.username===username)){showToast('Username already taken.','error');return;}
   users.push({id:nextUserId++,username,display,role,joined:new Date().toISOString().split('T')[0],banned:false,pass});
@@ -658,9 +1030,9 @@ function addUser(){
 }
 
 function renderUsers(){
-  const tbody=document.getElementById('userTableBody');tbody.innerHTML='';
+  const tbody = document.getElementById('userTableBody');tbody.innerHTML='';
   users.forEach((u,i)=>{
-    const tr=document.createElement('tr');
+    const tr = document.createElement('tr');
     tr.innerHTML=`
       <td><span class="user-avatar">${(u.display||u.username).charAt(0).toUpperCase()}</span>${u.display||u.username}</td>
       <td style="color:var(--muted);font-size:0.75rem;">@${u.username}</td>
@@ -687,11 +1059,12 @@ function deleteUser(i){
   confirmAction('🗑️','Delete Account','Delete @'+users[i].username+'?',()=>{users.splice(i,1);persist();showToast('Deleted.','error');renderUsers();updateStats();});
 }
 
+// ── Giveaways
 function createGiveaway(){
-  const prize=document.getElementById('gw-prize').value.trim();
-  const emoji=document.getElementById('gw-emoji').value.trim()||'🎁';
-  const desc=document.getElementById('gw-desc').value.trim()||'Enter for a chance to win!';
-  const winners=parseInt(document.getElementById('gw-winners').value)||1;
+  const prize   = document.getElementById('gw-prize').value.trim();
+  const emoji   = document.getElementById('gw-emoji').value.trim()||'🎁';
+  const desc    = document.getElementById('gw-desc').value.trim()||'Enter for a chance to win!';
+  const winners = parseInt(document.getElementById('gw-winners').value)||1;
   if(!prize){showToast('Prize name required.','error');return;}
   giveaways.unshift({id:Date.now(),prize,emoji,desc,winners,status:'active',entries:[],created:new Date().toLocaleDateString()});
   ['gw-prize','gw-emoji','gw-desc'].forEach(id=>document.getElementById(id).value='');
@@ -699,11 +1072,11 @@ function createGiveaway(){
   persist();showToast('Giveaway launched! 🎉','success');renderGiveaways();updateGiveawayBanner();
 }
 function renderGiveaways(){
-  const el=document.getElementById('giveawayList');
+  const el = document.getElementById('giveawayList');
   if(!giveaways.length){el.innerHTML='<div style="color:var(--muted);font-size:0.78rem;">No giveaways yet.</div>';return;}
   el.innerHTML='';
   giveaways.forEach((gw,i)=>{
-    const div=document.createElement('div');div.className='giveaway-card';
+    const div = document.createElement('div');div.className='giveaway-card';
     div.innerHTML=`<div style="font-size:2rem;">${gw.emoji}</div>
       <div class="giveaway-info">
         <div class="giveaway-prize">${gw.emoji} ${gw.prize}</div>
@@ -727,13 +1100,13 @@ function pickWinner(i){
   gw.status='ended';persist();showToast('🏆 Winner: '+gw.winner,'success');renderGiveaways();updateGiveawayBanner();
 }
 function updateGiveawayBanner(){
-  const active=giveaways.find(g=>g.status==='active');
-  const banner=document.getElementById('giveawayBanner');
+  const active = giveaways.find(g=>g.status==='active');
+  const banner = document.getElementById('giveawayBanner');
   if(active){
-    document.getElementById('gBannerTitle').textContent=active.emoji+' GIVEAWAY: '+active.prize;
-    document.getElementById('gBannerSub').textContent=active.desc+' · '+active.entries.length+' entries';
+    document.getElementById('gBannerTitle').textContent = active.emoji+' GIVEAWAY: '+active.prize;
+    document.getElementById('gBannerSub').textContent   = active.desc+' · '+active.entries.length+' entries';
     banner.style.display='block';
-  }else{banner.style.display='none';}
+  } else { banner.style.display='none'; }
 }
 function enterGiveaway(){
   const active=giveaways.find(g=>g.status==='active');if(!active)return;
@@ -743,11 +1116,12 @@ function enterGiveaway(){
   persist();showToast('You entered! Good luck 🍀','success');renderGiveaways();updateGiveawayBanner();
 }
 
+// ── Coupons
 function createCoupon(){
-  const code=document.getElementById('cp-code').value.trim().toUpperCase();
-  const type=document.getElementById('cp-type').value;
-  const amount=parseFloat(document.getElementById('cp-amount').value);
-  const maxUses=parseInt(document.getElementById('cp-uses').value)||0;
+  const code    = document.getElementById('cp-code').value.trim().toUpperCase();
+  const type    = document.getElementById('cp-type').value;
+  const amount  = parseFloat(document.getElementById('cp-amount').value);
+  const maxUses = parseInt(document.getElementById('cp-uses').value)||0;
   if(!code||isNaN(amount)||amount<=0){showToast('Fill in all coupon fields.','error');return;}
   if(coupons.find(c=>c.code===code)){showToast('Code already exists.','error');return;}
   coupons.push({code,type,amount,maxUses,uses:0,active:true});
@@ -755,13 +1129,13 @@ function createCoupon(){
   persist();showToast('Coupon "'+code+'" created!','success');renderCoupons();
 }
 function renderCoupons(){
-  const el=document.getElementById('couponList');
+  const el = document.getElementById('couponList');
   if(!coupons.length){el.innerHTML='<div style="color:var(--muted);font-size:0.78rem;">No coupons yet.</div>';return;}
   el.innerHTML='';
   coupons.forEach((c,i)=>{
-    const div=document.createElement('div');div.className='coupon-row';
-    const disc=c.type==='percent'?c.amount+'% OFF':'$'+c.amount+' OFF';
-    const usage=c.maxUses>0?c.uses+'/'+c.maxUses+' used':c.uses+' used (unlimited)';
+    const div = document.createElement('div');div.className='coupon-row';
+    const disc = c.type==='percent'?c.amount+'% OFF':'$'+c.amount+' OFF';
+    const usage= c.maxUses>0?c.uses+'/'+c.maxUses+' used':c.uses+' used (unlimited)';
     div.innerHTML=`
       <div class="coupon-code-lbl">${c.code}</div>
       <div class="coupon-meta">${disc} · ${usage}</div>
@@ -775,29 +1149,38 @@ function toggleCoupon(i){coupons[i].active=!coupons[i].active;persist();showToas
 function deleteCoupon(i){coupons.splice(i,1);persist();showToast('Deleted.','error');renderCoupons();}
 
 function applyCoupon(){
-  const code=document.getElementById('cartCouponInput').value.trim().toUpperCase();
+  const code = document.getElementById('cartCouponInput').value.trim().toUpperCase();
   if(!code){showToast('Enter a coupon code.','error');return;}
-  const coupon=coupons.find(c=>c.code===code&&c.active);
+  const coupon = coupons.find(c=>c.code===code&&c.active);
   if(!coupon){showToast('Invalid or expired coupon.','error');return;}
   if(coupon.maxUses>0&&coupon.uses>=coupon.maxUses){showToast('Coupon usage limit reached.','error');return;}
-  appliedCoupon=coupon;
+  appliedCoupon = coupon;
   document.getElementById('cartCouponInput').value='';
   document.getElementById('couponInputWrap').style.display='none';
   document.getElementById('couponAppliedDisplay').style.display='flex';
-  const disc=coupon.type==='percent'?coupon.amount+'% OFF':'$'+coupon.amount.toFixed(2)+' OFF';
-  document.getElementById('couponAppliedText').textContent=coupon.code+' — '+disc+' applied!';
+  const disc = coupon.type==='percent'?coupon.amount+'% OFF':'$'+coupon.amount.toFixed(2)+' OFF';
+  document.getElementById('couponAppliedText').textContent = coupon.code+' — '+disc+' applied!';
   showToast('Coupon applied! 🎉','success');renderCart();
 }
 function removeCoupon(){
-  appliedCoupon=null;
+  appliedCoupon = null;
   document.getElementById('couponInputWrap').style.display='flex';
   document.getElementById('couponAppliedDisplay').style.display='none';
   showToast('Coupon removed.','info');renderCart();
 }
 
+// ── Settings
 function previewAnnounce(v){document.getElementById('announcePreview').textContent=v||'(empty)';}
-function saveAnnounce(){document.getElementById('announceBanner').textContent=document.getElementById('set-announce').value.trim();showToast('Banner updated!','success');}
-function setShopStatus(s){shopOpen=s==='open';persist();document.getElementById('shopStatusLabel').textContent=shopOpen?'OPEN':'CLOSED';document.getElementById('shopStatusLabel').style.color=shopOpen?'var(--green)':'var(--red)';showToast('Shop is '+(shopOpen?'OPEN':'CLOSED')+'.',shopOpen?'success':'info');}
+function saveAnnounce(){
+  announceBannerText = document.getElementById('set-announce').value.trim();
+  document.getElementById('announceBanner').textContent = announceBannerText;
+  persist();showToast('Banner updated!','success');
+}
+function setShopStatus(s){
+  shopOpen = s==='open';persist();
+  updateShopClosedUI();
+  showToast('Shop is '+(shopOpen?'OPEN':'CLOSED')+'.',shopOpen?'success':'info');
+}
 function changePassword(){
   const p1=document.getElementById('set-pass').value;
   const p2=document.getElementById('set-pass2').value;
@@ -808,10 +1191,124 @@ function changePassword(){
   showToast('Password updated!','success');
 }
 
+// ── OWNER functions
+function sendGlobalAnnouncement(){
+  const msg = document.getElementById('ow-announce-msg').value.trim();
+  if(!msg){showToast('Enter an announcement message.','error');return;}
+  globalAnnouncementText = msg;
+  announcements.unshift({text:msg,time:new Date().toLocaleString()});
+  document.getElementById('ow-announce-msg').value='';
+  // Show on page
+  document.getElementById('globalAnnouncementText').textContent = msg;
+  document.getElementById('globalAnnouncement').classList.add('show');
+  sessionStorage.removeItem('gaDismissed');
+  globalAnnouncementDismissed = false;
+  persist();showToast('Announcement broadcast! 📢','success');
+  renderAnnouncementHistory();
+}
+function clearGlobalAnnouncement(){
+  globalAnnouncementText = '';
+  persist();
+  document.getElementById('globalAnnouncement').classList.remove('show');
+  showToast('Announcement cleared.','info');
+}
+function dismissGlobalAnnouncement(){
+  document.getElementById('globalAnnouncement').classList.remove('show');
+  sessionStorage.setItem('gaDismissed','1');
+  globalAnnouncementDismissed = true;
+}
+function renderAnnouncementHistory(){
+  const el = document.getElementById('announcementHistory');
+  if(!announcements.length){el.innerHTML='<div style="color:var(--muted);font-size:0.78rem;">No announcements sent yet.</div>';return;}
+  el.innerHTML='';
+  announcements.forEach((a,i)=>{
+    const div = document.createElement('div');div.className='announcement-item';
+    div.innerHTML=`
+      <div class="announcement-item-body">
+        <div class="announcement-item-text">${a.text}</div>
+        <div class="announcement-item-meta">${a.time}</div>
+      </div>
+      <button class="ap-btn-sm red" onclick="deleteAnnouncement(${i})">Delete</button>`;
+    el.appendChild(div);
+  });
+}
+function deleteAnnouncement(i){announcements.splice(i,1);persist();renderAnnouncementHistory();}
+
+function renderOrders(){
+  const el = document.getElementById('ordersList');
+  if(!orders.length){el.innerHTML='<div style="color:var(--muted);font-size:0.78rem;">No orders yet. When customers buy, you\'ll see it here.</div>';return;}
+  el.innerHTML='';
+  orders.forEach((o,i)=>{
+    const div = document.createElement('div');div.className='order-notif'+(o.unread?' unread':'');
+    div.innerHTML=`
+      ${o.unread?'<div class="unread-dot"></div>':''}
+      <div class="order-notif-icon">🛍️</div>
+      <div class="order-notif-body">
+        <div class="order-notif-title">Order #${o.id} — $${o.total}</div>
+        <div class="order-notif-meta">${o.name} · ${o.email} · ${o.method} · ${o.time}</div>
+        <div class="order-notif-meta" style="margin-top:0.3rem;">${o.items}</div>
+        <div class="order-notif-actions">
+          <button class="ap-btn-sm blue" onclick="openChatForOrder('${o.name}')">💬 Open Chat</button>
+          ${o.unread?`<button class="ap-btn-sm green" onclick="markOrderRead(${i})">Mark Read</button>`:''}
+        </div>
+      </div>`;
+    el.appendChild(div);
+  });
+}
+function markOrderRead(i){orders[i].unread=false;persist();renderOrders();updateOrderBadge();}
+function markAllOrdersRead(){orders.forEach(o=>o.unread=false);persist();renderOrders();updateOrderBadge();}
+function clearOrders(){confirmAction('🗑️','Clear Orders','Clear all order notifications?',()=>{orders=[];persist();renderOrders();updateOrderBadge();showToast('Cleared.','info');});}
+function updateOrderBadge(){
+  // Could add badge to owner button — skip for now
+}
+
+function savePaypalSettings(){
+  paypalUsername = document.getElementById('ow-paypal').value.trim();
+  paypalNote     = document.getElementById('ow-paypal-note').value.trim();
+  persist();showToast('PayPal settings saved!','success');
+  updatePaypalPreview();
+}
+function updatePaypalPreview(){
+  const prev = document.getElementById('paypalPreview');
+  if(!prev)return;
+  if(paypalUsername){
+    prev.style.display='block';
+    document.getElementById('paypalPreviewUsername').textContent = paypalUsername;
+    document.getElementById('paypalPreviewNote').textContent = paypalNote || 'Send payment and include your order ID in the note.';
+  } else {
+    prev.style.display='none';
+  }
+  // Update chat paypal section
+  const chatPP = document.getElementById('chatPaypalSection');
+  const chatPPInfo = document.getElementById('chatPaypalInfo');
+  if(paypalUsername && chatPP && chatPPInfo){
+    chatPP.style.display='block';
+    chatPPInfo.textContent = paypalUsername + (paypalNote ? ' — '+paypalNote : '');
+  } else if(chatPP){
+    chatPP.style.display='none';
+  }
+}
+function changeOwnerPassword(){
+  const p1=document.getElementById('ow-pass').value;
+  const p2=document.getElementById('ow-pass2').value;
+  if(!p1||!p2){showToast('Fill both fields.','error');return;}
+  if(p1!==p2){showToast('Passwords do not match.','error');return;}
+  if(p1.length<6){showToast('Min 6 characters.','error');return;}
+  OWNER_PASS=p1;persist();document.getElementById('ow-pass').value='';document.getElementById('ow-pass2').value='';
+  showToast('Owner password updated!','success');
+}
+function saveChatSettings(){
+  chatAgentName = document.getElementById('ow-chat-name').value.trim()||'John (Support)';
+  persist();
+  document.getElementById('chatAgentName').textContent = chatAgentName;
+  showToast('Chat settings saved!','success');
+}
+
+// ── Cart
 function addToCart(productIdx,e){
-  if(e)e.stopPropagation();
-  const ex=cart.find(c=>c.productIdx===productIdx);
-  if(ex)ex.qty++;else cart.push({productIdx,qty:1});
+  if(e) e.stopPropagation();
+  const ex = cart.find(c=>c.productIdx===productIdx);
+  if(ex) ex.qty++; else cart.push({productIdx,qty:1});
   persist();updateCartBadge();renderCart();showToast('Added to cart!','success');
 }
 function removeFromCart(ci){cart.splice(ci,1);persist();updateCartBadge();renderCart();}
@@ -834,13 +1331,12 @@ function calcTotals(){
     discount=appliedCoupon.type==='percent'?subtotal*(appliedCoupon.amount/100):Math.min(appliedCoupon.amount,subtotal);
   }
   const after=subtotal-discount;
-  const shipping=0;
-  return{subtotal,discount,after,shipping,total:after+shipping};
+  return{subtotal,discount,after,shipping:0,total:after};
 }
 
 function renderCart(){
-  const container=document.getElementById('cartItems');
-  const footer=document.getElementById('cartFooter');
+  const container = document.getElementById('cartItems');
+  const footer    = document.getElementById('cartFooter');
   container.innerHTML='';
   if(!cart.length){
     container.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div class="cart-empty-text">Your cart is empty</div></div>';
@@ -874,7 +1370,7 @@ function renderCart(){
     dr.style.display='flex';
     document.getElementById('cartDiscountLabel').textContent='Coupon ('+appliedCoupon.code+')';
     document.getElementById('cartDiscountAmt').textContent='-$'+discount.toFixed(2);
-  }else{dr.style.display='none';}
+  } else { dr.style.display='none'; }
   document.getElementById('cartShipping').textContent='Free';
   document.getElementById('cartTotal').textContent='$'+total.toFixed(2);
   footer.style.display='block';
@@ -882,8 +1378,10 @@ function renderCart(){
 function openCart(){renderCart();document.getElementById('cartDrawer').classList.add('open');document.getElementById('cartBackdrop').classList.add('open');}
 function closeCart(){document.getElementById('cartDrawer').classList.remove('open');document.getElementById('cartBackdrop').classList.remove('open');}
 
+// ── Checkout
 function openCheckout(){
   if(!cart.length)return;
+  if(!shopOpen){showToast('Store is currently closed!','error');return;}
   closeCart();
   buildCheckoutForm();
   document.getElementById('checkoutOverlay').classList.add('open');
@@ -900,6 +1398,8 @@ function buildCheckoutForm(){
     </div>`;
   }).join('');
   const discRow=discount>0?`<div class="checkout-total-row discount-row"><span>Coupon (${appliedCoupon.code})</span><span>-$${discount.toFixed(2)}</span></div>`:'';
+  const hasPaypal = !!paypalUsername;
+
   document.getElementById('checkoutBox').innerHTML=`
     <div class="checkout-header">
       <div class="checkout-title">Checkout</div>
@@ -913,77 +1413,185 @@ function buildCheckoutForm(){
         <div class="checkout-field checkout-full"><label class="checkout-label">Email Address *</label><input class="checkout-input" id="co-email" type="email" placeholder="john@example.com"/></div>
         <div class="checkout-field checkout-full"><label class="checkout-label">Discord Username (optional)</label><input class="checkout-input" id="co-discord" placeholder="john#0001"/></div>
       </div>
-      <div class="checkout-step" style="margin-top:1.5rem;">02 — Payment Details</div>
-      <div class="checkout-grid">
-        <div class="checkout-field checkout-full"><label class="checkout-label">Card Number *</label><input class="checkout-input" id="co-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/></div>
-        <div class="checkout-field"><label class="checkout-label">Expiry (MM/YY) *</label><input class="checkout-input" id="co-expiry" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"/></div>
-        <div class="checkout-field"><label class="checkout-label">CVV *</label><input class="checkout-input" id="co-cvv" placeholder="123" maxlength="4" type="password"/></div>
-        <div class="checkout-field checkout-full"><label class="checkout-label">Name on Card *</label><input class="checkout-input" id="co-cardname" placeholder="John Doe"/></div>
+      <div class="checkout-step" style="margin-top:1.5rem;">02 — Payment Method</div>
+      <div class="pay-method-tabs">
+        <button class="pay-method-tab active" onclick="switchPayMethod('card',this)">💳 Card</button>
+        ${hasPaypal?`<button class="pay-method-tab" onclick="switchPayMethod('paypal',this)">💸 PayPal</button>`:''}
       </div>
+      <div class="pay-method-content active" id="pm-card">
+        <div class="checkout-grid">
+          <div class="checkout-field checkout-full"><label class="checkout-label">Card Number *</label><input class="checkout-input" id="co-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"/></div>
+          <div class="checkout-field"><label class="checkout-label">Expiry (MM/YY) *</label><input class="checkout-input" id="co-expiry" placeholder="MM/YY" maxlength="5" oninput="fmtExpiry(this)"/></div>
+          <div class="checkout-field"><label class="checkout-label">CVV *</label><input class="checkout-input" id="co-cvv" placeholder="123" maxlength="4" type="password"/></div>
+          <div class="checkout-field checkout-full"><label class="checkout-label">Name on Card *</label><input class="checkout-input" id="co-cardname" placeholder="John Doe"/></div>
+        </div>
+      </div>
+      ${hasPaypal?`
+      <div class="pay-method-content" id="pm-paypal">
+        <div class="paypal-info-box">
+          <div class="paypal-info-title">💸 Send Payment via PayPal</div>
+          <div class="paypal-username-display">${paypalUsername}</div>
+          <div class="paypal-instruction">${paypalNote||'Send payment and include your order ID in the note. Click below once sent.'}</div>
+        </div>
+      </div>`:''}
       <div class="checkout-step" style="margin-top:1.5rem;">03 — Order Summary</div>
       <div class="checkout-order-summary"><div class="checkout-order-title">Items in your order</div>${items}</div>
       <div class="checkout-total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
       ${discRow}
       <div class="checkout-total-row"><span>Shipping</span><span>Free</span></div>
       <div class="checkout-total-row grand"><span>Total</span><span>$${total.toFixed(2)}</span></div>
-      <button class="checkout-pay-btn" onclick="processPayment()">🔒 Pay $${total.toFixed(2)}</button>
+      <button class="checkout-pay-btn" id="checkoutPayBtn" onclick="processPayment()">🔒 Pay $${total.toFixed(2)}</button>
       <button class="checkout-back-btn" onclick="closeCheckout();openCart();">← Back to Cart</button>
     </div>`;
+}
+
+function switchPayMethod(method, el){
+  document.querySelectorAll('.pay-method-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pay-method-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const contentEl = document.getElementById('pm-'+method);
+  if(contentEl) contentEl.classList.add('active');
+  // Update button label
+  const btn = document.getElementById('checkoutPayBtn');
+  const {total} = calcTotals();
+  if(method==='paypal') btn.textContent = '✓ I\'ve Sent the PayPal Payment';
+  else btn.textContent = '🔒 Pay $'+total.toFixed(2);
+  btn._method = method;
 }
 
 function fmtCard(input){let v=input.value.replace(/\D/g,'').substring(0,16);input.value=v.replace(/(.{4})/g,'$1 ').trim();}
 function fmtExpiry(input){let v=input.value.replace(/\D/g,'');if(v.length>=2)v=v.substring(0,2)+'/'+v.substring(2,4);input.value=v;}
 
 function processPayment(){
-  const fname=document.getElementById('co-fname').value.trim();
-  const lname=document.getElementById('co-lname').value.trim();
-  const email=document.getElementById('co-email').value.trim();
-  const card=document.getElementById('co-card').value.trim();
-  const expiry=document.getElementById('co-expiry').value.trim();
-  const cvv=document.getElementById('co-cvv').value.trim();
-  const cardname=document.getElementById('co-cardname').value.trim();
-  if(!fname||!lname||!email||!card||!expiry||!cvv||!cardname){showToast('Please fill in all required fields.','error');return;}
+  const fname    = document.getElementById('co-fname').value.trim();
+  const lname    = document.getElementById('co-lname').value.trim();
+  const email    = document.getElementById('co-email').value.trim();
+  if(!fname||!lname||!email){showToast('Please fill in contact information.','error');return;}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Enter a valid email address.','error');return;}
-  if(card.replace(/\s/g,'').length<13){showToast('Enter a valid card number.','error');return;}
-  if(!/^\d{2}\/\d{2}$/.test(expiry)){showToast('Enter expiry as MM/YY.','error');return;}
-  if(cvv.length<3){showToast('Enter a valid CVV.','error');return;}
+
+  const btn = document.getElementById('checkoutPayBtn');
+  const method = btn._method || 'card';
+
+  if(method !== 'paypal'){
+    const card     = document.getElementById('co-card').value.trim();
+    const expiry   = document.getElementById('co-expiry').value.trim();
+    const cvv      = document.getElementById('co-cvv').value.trim();
+    const cardname = document.getElementById('co-cardname').value.trim();
+    if(!card||!expiry||!cvv||!cardname){showToast('Please fill in payment details.','error');return;}
+    if(card.replace(/\s/g,'').length<13){showToast('Enter a valid card number.','error');return;}
+    if(!/^\d{2}\/\d{2}$/.test(expiry)){showToast('Enter expiry as MM/YY.','error');return;}
+    if(cvv.length<3){showToast('Enter a valid CVV.','error');return;}
+  }
+
   if(appliedCoupon){const c=coupons.find(x=>x.code===appliedCoupon.code);if(c)c.uses++;}
-  const orderId='JNS-'+Date.now().toString().slice(-6).toUpperCase();
-  const {total}=calcTotals();
+
+  const orderId  = 'JNS-'+Date.now().toString().slice(-6).toUpperCase();
+  const {total}  = calcTotals();
+  const itemNames= cart.map(item=>{const p=products[item.productIdx];return p?`${p.name} ×${item.qty}`:''}).filter(Boolean).join(', ');
+
+  // Record order for owner notifications
+  orders.unshift({
+    id:orderId,
+    name:fname+' '+lname,
+    email,
+    method:method==='paypal'?'PayPal':'Card',
+    total:total.toFixed(2),
+    items:itemNames,
+    time:new Date().toLocaleString(),
+    unread:true
+  });
+  persist();
+
+  // Show success
   document.getElementById('checkoutBox').innerHTML=`
     <div class="checkout-success">
-      <span class="success-icon">🎉</span>
-      <div class="success-title">Order Placed!</div>
-      <div class="success-sub">Thanks, ${fname}! Your order has been received.<br>A confirmation will be sent to <strong style="color:var(--text);">${email}</strong>.</div>
+      <span class="success-icon">${method==='paypal'?'💸':'🎉'}</span>
+      <div class="success-title">${method==='paypal'?'Payment Sent!':'Order Placed!'}</div>
+      <div class="success-sub">Thanks, ${fname}! ${method==='paypal'?'The seller will confirm your PayPal payment and be in touch.':'Your order has been received.'}<br>Contact: <strong style="color:var(--text);">${email}</strong>.</div>
       <div class="success-order-id">Order #${orderId} · $${total.toFixed(2)}</div>
-      <button class="success-done-btn" onclick="closeCheckout();clearCart();">Done →</button>
+      <button class="success-chat-btn" onclick="closeCheckout();openChatAfterOrder('${fname}','${orderId}');">💬 Chat with Support</button>
+      <button class="success-done-btn" style="margin-top:0.6rem;" onclick="closeCheckout();clearCart();">Done →</button>
     </div>`;
-  appliedCoupon=null;
+
+  appliedCoupon = null;
   document.getElementById('couponInputWrap').style.display='flex';
   document.getElementById('couponAppliedDisplay').style.display='none';
   persist();
 }
 
-function openModal(i){
-  const p=products[i];
-  document.getElementById('m-emoji').textContent=p.emoji||'📦';
-  document.getElementById('m-cat').textContent=p.category;
-  document.getElementById('m-name').textContent=p.name;
-  document.getElementById('m-price').textContent='$'+parseFloat(p.price).toFixed(2);
-  document.getElementById('m-desc').textContent=p.desc;
-  document.getElementById('m-buy-btn').onclick=()=>{addToCart(i);document.getElementById('modal').classList.remove('open');};
-  document.getElementById('modal').classList.add('open');
+function openChatAfterOrder(name, orderId){
+  clearCart();
+  openChatWithMessage(`Hi! I just placed order #${orderId}. Can you help me?`);
+}
+function openChatForOrder(name){
+  openChatWithMessage('');
+  showToast('Opened chat for '+name,'info');
+}
+function openChatWithMessage(msg){
+  document.getElementById('chatWindow').classList.add('open');
+  chatOpen = true;
+  document.getElementById('chatUnreadBadge').classList.remove('show');
+  if(msg){
+    document.getElementById('chatInput').value = msg;
+  }
 }
 
+// ── Live Chat
+function addChatMsg(from, sender, text){
+  chatMessages.push({from,sender,text,time:new Date().toLocaleTimeString()});
+  renderChatMessages();
+}
+function renderChatMessages(){
+  const el = document.getElementById('chatMessages');
+  el.innerHTML = '';
+  chatMessages.forEach(m=>{
+    const div = document.createElement('div');
+    div.className = 'chat-msg '+m.from;
+    div.innerHTML = `<div class="msg-sender">${m.sender} · ${m.time}</div>${m.text}`;
+    el.appendChild(div);
+  });
+  el.scrollTop = el.scrollHeight;
+}
+function toggleChat(){
+  chatOpen = !chatOpen;
+  const win = document.getElementById('chatWindow');
+  if(chatOpen){win.classList.add('open');document.getElementById('chatUnreadBadge').classList.remove('show');}
+  else{win.classList.remove('open');}
+}
+function sendChatMessage(){
+  const input = document.getElementById('chatInput');
+  const text  = input.value.trim();
+  if(!text)return;
+  addChatMsg('us','You',text);
+  input.value = '';
+  // Auto-reply after short delay
+  setTimeout(()=>{
+    const replies = [
+      'Thanks for reaching out! I\'ll get back to you shortly. 🙏',
+      'Got it! Let me look into that for you.',
+      'Received! I\'ll be with you in just a moment.',
+      'Thanks! One sec while I check on that.',
+      'Hey! I see your message, give me just a moment.'
+    ];
+    const reply = replies[Math.floor(Math.random()*replies.length)];
+    addChatMsg('them', chatAgentName, reply);
+    if(!chatOpen){
+      document.getElementById('chatUnreadBadge').classList.add('show');
+      document.getElementById('chatUnreadBadge').textContent = '1';
+    }
+  }, 1200 + Math.random()*1000);
+}
+
+// ── Login / Admin / Owner
 function toggleAdmin(){
-  if(isAdmin)document.getElementById('adminPanel').classList.toggle('open');
+  if(isAdmin) document.getElementById('adminPanel').classList.toggle('open');
   else{document.getElementById('loginOverlay').classList.add('open');setTimeout(()=>document.getElementById('loginUser').focus(),100);}
 }
 function doLogin(){
-  const u=document.getElementById('loginUser').value.trim();
-  const p=document.getElementById('loginPass').value;
-  const au=users.find(us=>us.username===u&&(us.role==='admin'||us.role==='owner')&&!us.banned);
-  if(au&&p===ADMIN_PASS){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const au= users.find(us=>us.username===u&&(us.role==='admin'||us.role==='owner')&&!us.banned);
+  if(au && p===ADMIN_PASS){
     isAdmin=true;persist();
     document.getElementById('loginOverlay').classList.remove('open');
     document.getElementById('loginPass').value='';document.getElementById('loginUser').value='';
@@ -992,9 +1600,11 @@ function doLogin(){
     document.getElementById('adminToggleBtn').classList.add('active');
     document.getElementById('adminToggleBtn').textContent='⚙ Admin ●';
     document.getElementById('products').classList.add('admin-mode');
+    // If shop was closed, hide overlay for admin
+    document.getElementById('shopClosedOverlay').classList.remove('show');
     renderUsers();renderGiveaways();renderCoupons();
     showToast('Welcome back, '+au.display+'!','success');render();
-  }else{
+  } else {
     document.getElementById('loginErr').style.display='block';
     document.getElementById('loginPass').value='';
   }
@@ -1010,28 +1620,83 @@ function logout(){
   document.getElementById('adminToggleBtn').classList.remove('active');
   document.getElementById('adminToggleBtn').textContent='⚙ Admin';
   document.getElementById('products').classList.remove('admin-mode');
+  if(!shopOpen) document.getElementById('shopClosedOverlay').classList.add('show');
   showToast('Logged out.','info');render();
 }
 
+function toggleOwner(){
+  if(isOwner) document.getElementById('ownerPanel').classList.toggle('open');
+  else{document.getElementById('ownerLoginOverlay').classList.add('open');setTimeout(()=>document.getElementById('ownerLoginPass').focus(),100);}
+}
+function doOwnerLogin(){
+  const p = document.getElementById('ownerLoginPass').value;
+  if(p === OWNER_PASS){
+    isOwner=true;persist();
+    document.getElementById('ownerLoginOverlay').classList.remove('open');
+    document.getElementById('ownerLoginPass').value='';
+    document.getElementById('ownerLoginErr').style.display='none';
+    document.getElementById('ownerPanel').classList.add('open');
+    document.getElementById('ownerToggleBtn').classList.add('active');
+    document.getElementById('ownerToggleBtn').textContent='👑 Owner ●';
+    document.getElementById('shopClosedOverlay').classList.remove('show');
+    // Load paypal inputs
+    document.getElementById('ow-paypal').value = paypalUsername;
+    document.getElementById('ow-paypal-note').value = paypalNote;
+    document.getElementById('ow-chat-name').value = chatAgentName;
+    renderAnnouncementHistory();renderOrders();
+    showToast('Welcome back, Owner! 👑','success');
+  } else {
+    document.getElementById('ownerLoginErr').style.display='block';
+    document.getElementById('ownerLoginPass').value='';
+  }
+}
+function cancelOwnerLogin(){
+  document.getElementById('ownerLoginOverlay').classList.remove('open');
+  document.getElementById('ownerLoginErr').style.display='none';
+  document.getElementById('ownerLoginPass').value='';
+}
+function ownerLogout(){
+  isOwner=false;persist();
+  document.getElementById('ownerPanel').classList.remove('open');
+  document.getElementById('ownerToggleBtn').classList.remove('active');
+  document.getElementById('ownerToggleBtn').textContent='👑 Owner';
+  if(!shopOpen && !isAdmin) document.getElementById('shopClosedOverlay').classList.add('show');
+  showToast('Logged out of owner panel.','info');
+}
+
+// ── Modal
+function openModal(i){
+  const p = products[i];
+  document.getElementById('m-emoji').textContent = p.emoji||'📦';
+  document.getElementById('m-cat').textContent   = p.category;
+  document.getElementById('m-name').textContent  = p.name;
+  document.getElementById('m-price').textContent = '$'+parseFloat(p.price).toFixed(2);
+  document.getElementById('m-desc').textContent  = p.desc;
+  document.getElementById('m-buy-btn').onclick   = ()=>{addToCart(i);document.getElementById('modal').classList.remove('open');};
+  document.getElementById('modal').classList.add('open');
+}
+
+// ── Confirm
 function confirmAction(icon,title,msg,onYes){
-  document.getElementById('confirmIcon').textContent=icon;
-  document.getElementById('confirmTitle').textContent=title;
-  document.getElementById('confirmMsg').textContent=msg;
-  document.getElementById('confirmYesBtn').onclick=()=>{document.getElementById('confirmOverlay').classList.remove('open');onYes();};
+  document.getElementById('confirmIcon').textContent  = icon;
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent   = msg;
+  document.getElementById('confirmYesBtn').onclick    = ()=>{document.getElementById('confirmOverlay').classList.remove('open');onYes();};
   document.getElementById('confirmOverlay').classList.add('open');
 }
 
+// ── Toast
 function showToast(msg,type='info'){
-  const t=document.getElementById('toast');
+  const t = document.getElementById('toast');
   t.textContent=msg;t.className='toast '+type;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2400);
 }
 
-// Init
+// ── Boot
 render();
 updateCartBadge();
 updateGiveawayBanner();
-if(isAdmin){renderUsers();renderGiveaways();renderCoupons();}
+initUI();
 </script>
 </body>
 </html>
